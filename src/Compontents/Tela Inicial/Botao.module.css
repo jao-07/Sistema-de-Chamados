@@ -1,0 +1,27 @@
+.container{
+    padding: 10px;
+}
+
+.botao{
+    background-color: rgb(133, 133, 133);
+    box-shadow: 12px 12px 12px rgba(0, 0, 0, 0.5),
+    -10px -10px 10px white;
+    font-size: 30px;
+    padding: 20px;
+    margin-bottom: 30px;
+    border-radius: 10px;
+    color: rgb(0, 255, 0);
+    text-align: center;
+    user-select: none;
+    transition: all 0.1s ease-in-out;
+}
+
+.botao:hover{
+    transform: scale(1.05);
+    cursor: pointer;
+}
+
+.botao:active{
+    transform: scale(0.95);
+    background-color: #388E3C;
+}
