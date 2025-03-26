@@ -1,29 +1,78 @@
 .container{
     display: flex;
-    justify-content: center;
+    flex-direction: column;
+    align-items: center;
     margin-top: 100px;
+    max-width: 100%;
 }
 
-.form{
+
+
+.aproveitamento{
+    width: 60%;
     display: flex;
     justify-content: space-between;
-    background-color: bisque;
-    width: 80%;
+}
+
+.aproveitamento button{
+    background-color: green;
+    color: white;
+}
+
+.aproveitamento button:hover{
+    transform: scale(1.05);
+    border: none;
+}
+
+.aproveitamento button:active{
+    transform: scale(0.95);
+}
+
+
+
+.form{
+    width: 70%;
+    margin-bottom: 100px;
+}
+
+.secao{
+    background-color: white;
+    margin-bottom: 100px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
     border-radius: 10px;
-    padding: 100px;
+    padding: 30px 100px;
 }
 
-.formInput{
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    font-size: 15px;
-    font-weight: bolder;
-    width: 40%;
+.secao h2{
+    font-family: 'Poppins', sans-serif;
 }
 
-.formInput input{
-    padding: 4px;
-    height: 30px;
-    width: 100%;
-    padding-left: 10px;
-    margin: 10px 0;
+.inputsSecao{
+    display: flex;
+    justify-content: space-between;
+}
+
+
+
+
+.submitButton{
+    display: flex;
+    justify-content: end;
+}
+
+.submitButton button{
+    width: 150px;
+    height: 50px;
+    background-color: green;
+    color: white;
+}
+
+.submitButton button:hover{
+    transform: scale(1.05);
+    background-color: rgb(41, 255, 41);
+}
+
+.submitButton button:active{
+    transform: scale(0.95);
+    background-color: rgb(20, 50, 20);
 }
