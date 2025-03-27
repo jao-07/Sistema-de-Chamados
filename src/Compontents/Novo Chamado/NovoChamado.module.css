@@ -6,8 +6,6 @@
     max-width: 100%;
 }
 
-
-
 .aproveitamento{
     width: 60%;
     display: flex;
@@ -45,6 +43,12 @@
 
 .secao h2{
     font-family: 'Poppins', sans-serif;
+}
+
+.secao p{
+    color: red;
+    font-size: 20px;
+    font-weight: bold;
 }
 
 .inputsSecao{

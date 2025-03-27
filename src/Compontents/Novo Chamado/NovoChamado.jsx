@@ -1,58 +1,94 @@
 import React from 'react';
-import { useParams } from 'react-router-dom'
 import { useEffect, useState } from 'react';
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import styles from "./NovoChamado.module.css"
 import FormInput from './FormInput';
+import PopUpErro from './PopUpErro';
+import Loading from './Loading';
 
 //Define as regras de cada input utilizando a biblioteca yup
 const schema = yup.object({
   nome: yup.string().required("O nome é obrigatório!"),
-  email: yup.string().email("Email inválido!").required("O email é obrigatório!")
+  email: yup.string().email("Email inválido!").required("O email é obrigatório!"),
+  idade: yup.number().required("O campo idade é obrigatório").positive("Idade inválida")
 })
 
 
 const NovoChamado = () => {
 
-  //define a variável id como new no caso de um novo chamado ou como o id passado na tela inicial para aproveitar os dados de um chamado
-  const params = useParams()
-  const id = params.idChamado || "new";
-
   //Utiliza o useState para criar um vetor com as variáveis do formulário e a função para atualizá-las
-  const [variaveisForm, SetVariaveisForm] = useState([])
-
-  //Utiliza useEffect para buscar as informações do chamado de que se quer aproveitar
-  useEffect(() => {
-    try{
-      if(id != "new"){
-        console.log(`Busca pelo chamado ${id}`)
-        //axios para buscar as variaveis do chamado do determinado id
-        //SetVariaveisForm(variaveis)
-      }
-    }
-    catch(error){
-      console.error(`Erro ao obter o chamado ${id}`)
-    }
-  }, [])
+  const [loading, SetLoading] = useState(false)
+  const [idChamado, SetIdChamado] = useState(0)
+  const [valorInputID, SetValorInputID] = useState(0)
+  const [erroDados, SetErroDados] = useState(false)
 
   //Usa o hook useForm para o controle e validação dos inputs do formulário
-  const {register, handleSubmit, formState: {errors} } = useForm({
-    resolver: yupResolver(schema)
+  const {register, handleSubmit, setValue, reset, formState: {errors} } = useForm({
+    resolver: yupResolver(schema),
+    defaultValues: {
+      nome: "",
+      email: "",
+      idade: "",
+    },
   })
+
+  const dadosDoBanco = {
+    nome: "João Silva",
+    email: "joao@email.com",
+    idade: 30,
+  };
+
+  const esperar = (ms) => new Promise(resolve => setTimeout(resolve, ms));
+
+   //Utiliza useEffect para buscar as informações do chamado de que se quer aproveitar
+   useEffect(() => {
+    SetLoading(true)
+    const getDados = async (ID) => {
+      try{
+        await esperar(2000)
+        const response = await Promise.resolve(dadosDoBanco)
+        reset(response)
+        SetErroDados(null)
+        SetLoading(false)
+      }
+      catch(error){
+        SetLoading(false)
+        SetErroDados("Erro! Não foi possível carregar os dados")
+      }
+    }
+    getDados(idChamado)
+    SetIdChamado()
+  }, [idChamado])
 
   //Função que envia os dados do formulário para o backend ao clicar no botão de submit
   const onSubmit = (data) => console.log("Dados enviados:", data);
 
-//   return (
-//     <div style={{display: "flex", justifyContent: "center", marginTop: "300px"}}>
-//         <img src="/loading.svg" alt="Carregando"/>
-//     </div>
-// )  
+  const handleClickID = (valorInput) => {
+    if(valorInput && valorInput > 0){
+      SetIdChamado(valorInputID)
+      SetErroDados()
+    }
+    else{
+      SetErroDados("Erro! ID de chamado inválido")
+    } 
+  }
+
+  const handleCloseError = () => {
+    SetErroDados()
+  }
 
   return (
     <div className={styles.container}>
+
+      {loading && (
+        <Loading />
+      )}
+
+      {erroDados && (
+        <PopUpErro error={erroDados} functionClose={handleCloseError}/>
+      )}
 
       <div className={styles.form}>
 
@@ -63,12 +99,12 @@ const NovoChamado = () => {
               type="number"
               placeholder="Digite o número do chamado"
               style={{width: "50%"}}
+              onChange={(event) => SetValorInputID(event.target.value)}
             />
-            <button>
+            <button onClick={() => handleClickID(valorInputID)}>
               Buscar
             </button>
           </div>
-          
         </div>
 
         <form onSubmit={handleSubmit(onSubmit)}>
@@ -96,11 +132,11 @@ const NovoChamado = () => {
               />
 
               <FormInput
-                label="Email"
-                nome="email"
-                placeholder="Digite seu email"
+                label="Idade"
+                nome="idade"
+                placeholder="Digite sua idade"
                 register={register}
-                error={errors.email}
+                error={errors.idade}
               />
             </div>
           </div>
