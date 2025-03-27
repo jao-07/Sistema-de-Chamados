@@ -27,6 +27,18 @@
 }
 
 
+.conteudo{
+    display: flex;
+}
+
+.iconExclamacao{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    right: 50px;
+    font-size: 100px;
+}
 
 .form{
     width: 70%;
@@ -46,9 +58,7 @@
 }
 
 .secao p{
-    color: red;
     font-size: 20px;
-    font-weight: bold;
 }
 
 .inputsSecao{
@@ -56,7 +66,10 @@
     justify-content: space-between;
 }
 
-
+.coluna{
+    flex: 1;
+    margin: 0 10px;
+}
 
 
 .submitButton{

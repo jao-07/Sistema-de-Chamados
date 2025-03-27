@@ -7,12 +7,12 @@ import styles from "./NovoChamado.module.css"
 import FormInput from './FormInput';
 import PopUpErro from './PopUpErro';
 import Loading from './Loading';
+import { FaExclamationCircle } from "react-icons/fa";
 
 //Define as regras de cada input utilizando a biblioteca yup
 const schema = yup.object({
-  nome: yup.string().required("O nome é obrigatório!"),
-  email: yup.string().email("Email inválido!").required("O email é obrigatório!"),
-  idade: yup.number().required("O campo idade é obrigatório").positive("Idade inválida")
+  solicitante: yup.string().required("O nome é obrigatório!"),
+  emailInstitucional: yup.string().email("Email inválido!").required("O email é obrigatório!")
 })
 
 
@@ -28,17 +28,15 @@ const NovoChamado = () => {
   const {register, handleSubmit, setValue, reset, formState: {errors} } = useForm({
     resolver: yupResolver(schema),
     defaultValues: {
-      nome: "",
-      email: "",
-      idade: "",
+      solicitante: "",
+      emailInstitucional: ""
     },
   })
 
   const dadosDoBanco = {
-    nome: "João Silva",
-    email: "joao@email.com",
-    idade: 30,
-  };
+    solicitante: "João Silva",
+    emailInstitucional: "joao@email.com"
+  }
 
   const esperar = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 
@@ -92,8 +90,8 @@ const NovoChamado = () => {
 
       <div className={styles.form}>
 
-        <div className={styles.secao}>
-          <h3>Para aproveitar os dados de um chamado anterior, digite o número do chamado e clique no botão</h3>
+      <div className={styles.secao}>
+          <p>Para aproveitar os dados de um chamado anterior, digite o número do chamado e clique no botão</p>
           <div className={styles.aproveitamento}>
             <input 
               type="number"
@@ -107,37 +105,58 @@ const NovoChamado = () => {
           </div>
         </div>
 
+        <div className={styles.secao}>
+          <div className={styles.conteudo}>
+            <div className={styles.iconExclamacao}>
+              <FaExclamationCircle />
+            </div>
+            <div>
+              <h2>Atenção!</h2>
+              <p>Para cada serviço, deverá ser aberto um chamado separadamente!</p>
+            </div>
+          </div>
+        </div>
+
         <form onSubmit={handleSubmit(onSubmit)}>
 
           <div className={styles.secao}>
-            <h2>Informações Pessoais</h2>
-            <FormInput
-              label="Nome"
-              nome="nome"
-              placeholder="Digite seu nome"
-              register={register}
-              error={errors.nome}
-            />
+            <h2>Informações do usuário</h2>
+            <div className={styles.inputsSecao}>
+
+              <div className={styles.coluna}>
+                <FormInput
+                  label="Solicitante"
+                  nome="solicitante"
+                  placeholder="Digite seu nome"
+                  register={register}
+                  error={errors.solicitante}
+                />
+
+              </div>
+
+              <div className={styles.coluna}>
+                <FormInput
+                  label="Email Institucional"
+                  nome="emailInstitucional"
+                  placeholder="Digite seu email"
+                  register={register}
+                  error={errors.emailInstitucional}
+                />
+              </div>
+
+            </div>
           </div>
 
           <div className={styles.secao}>
-            <h2>Informações Pessoais</h2>
+            <h2>Informações do serviço</h2>
             <div className={styles.inputsSecao}>
-              <FormInput
-                label="Email"
-                nome="email"
-                placeholder="Digite seu email"
-                register={register}
-                error={errors.email}
-              />
 
-              <FormInput
-                label="Idade"
-                nome="idade"
-                placeholder="Digite sua idade"
-                register={register}
-                error={errors.idade}
-              />
+              <div className={styles.coluna}>
+                  Fazer as divs interativas para a escolha do tipo de serviço
+              </div>
+              <div className={styles.coluna}>
+
+              </div>
             </div>
           </div>
 
