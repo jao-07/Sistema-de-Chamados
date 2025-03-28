@@ -7,6 +7,7 @@ import styles from "./NovoChamado.module.css"
 import FormInput from './FormInput';
 import PopUpErro from './PopUpErro';
 import Loading from './Loading';
+import DivEscolhas from './DivEscolhas';
 import { FaExclamationCircle } from "react-icons/fa";
 
 //Define as regras de cada input utilizando a biblioteca yup
@@ -18,11 +19,12 @@ const schema = yup.object({
 
 const NovoChamado = () => {
 
-  //Utiliza o useState para criar um vetor com as variáveis do formulário e a função para atualizá-las
+  //useStates utilizados
   const [loading, SetLoading] = useState(false)
   const [idChamado, SetIdChamado] = useState(0)
   const [valorInputID, SetValorInputID] = useState(0)
   const [erroDados, SetErroDados] = useState(false)
+  const [areaSelecionada, SetAreaSelecionada] = useState(null)
 
   //Usa o hook useForm para o controle e validação dos inputs do formulário
   const {register, handleSubmit, setValue, reset, formState: {errors} } = useForm({
@@ -76,6 +78,16 @@ const NovoChamado = () => {
   const handleCloseError = () => {
     SetErroDados()
   }
+
+  //Vetor de objetos utilizado para a parte da escolha da área do serviço
+  const vetorArea = 
+  [
+    {id: 1, icone: "FaComputer", titulo:"Informática"},
+    {id: 2, icone: "FaMicrophoneLines", titulo:"Assessoria de Comunicação"},
+    {id: 3, icone: "FaGears", titulo:"Serviços de Infraestrutura"},
+    {id: 4, icone: "FaScrewdriverWrench", titulo:"Manutenção Predial ou de Equipamentos"}
+  ]
+
 
   return (
     <div className={styles.container}>
@@ -149,15 +161,9 @@ const NovoChamado = () => {
 
           <div className={styles.secao}>
             <h2>Informações do serviço</h2>
-            <div className={styles.inputsSecao}>
-
-              <div className={styles.coluna}>
-                  Fazer as divs interativas para a escolha do tipo de serviço
-              </div>
-              <div className={styles.coluna}>
-
-              </div>
-            </div>
+            <p>Escolha a área do serviço desejado</p>
+            <DivEscolhas vetor={vetorArea} size={80} onEscolha={SetAreaSelecionada}/>
+            Continuar o desenvolvimento das escolhas de area de serviço
           </div>
 
           <div className={styles.submitButton}>

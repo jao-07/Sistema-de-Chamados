@@ -1,0 +1,13 @@
+.container{
+    display: flex;
+    justify-content: space-between;
+}
+
+.icons{
+    width: 150px;
+}
+
+.icons:hover{
+    cursor: pointer;
+    transform: scale(1.05);
+}
