@@ -1,0 +1,19 @@
+select {
+    width: 50%;
+    padding: 10px;
+    font-size: 16px;
+    border: 2px solid green;
+    border-radius: 10px;
+    background-color: white;
+    cursor: pointer;
+    outline: none;
+}
+
+select:hover {
+    border-color: green;
+}
+  
+select:focus {
+    border-color: green;
+    box-shadow: 0 0 5px rgba(0, 128, 0, 0.5);
+}
