@@ -2,7 +2,7 @@ import React from 'react'
 import { useState, useEffect } from 'react'
 import styles from './Select.module.css'
 
-const Select = ({vetorServicos, vetorCategorias, titulo, opcaoSelecionada, onEscolha}) => {
+const Select = ({vetorServicos, vetorCategorias, titulo, register, nome, error, placeholder, selectedValue}) => {
 
     const [descricao, SetDescricao] = useState("")
 
@@ -16,14 +16,14 @@ const Select = ({vetorServicos, vetorCategorias, titulo, opcaoSelecionada, onEsc
                 console.error("Erro ao obter a descrição do serviço selecionado")
             }
         }
-        getDados(opcaoSelecionada)
-    }, [opcaoSelecionada])
+        getDados()
+    }, [])
 
     return (
         <div>
-            <p>{titulo}</p>
-            <select value={opcaoSelecionada} onChange={e => onEscolha(e.target.value)}>
-                {!opcaoSelecionada && <option value="" hidden>Selecione uma opção</option>}
+            <label>{titulo}</label>
+            <select {...register(nome)}>
+            {!selectedValue && <option value="" hidden>{placeholder}</option>}
                 {
                     vetorCategorias.map((itemCategoria) => (
                         <optgroup label={`${itemCategoria.categoria} - ${itemCategoria.descricao}`} key={itemCategoria.categoria}>
@@ -34,11 +34,13 @@ const Select = ({vetorServicos, vetorCategorias, titulo, opcaoSelecionada, onEsc
                                 ))
                             }       
                         </optgroup>
-                    )) 
+                    ))
                 }
             </select>
-            <div className={styles.descricao}>
-                <p>Descrição: {descricao}</p>
+            {error && <p className={styles.erro}>{error.message}</p>}
+            <div className={styles.observacoes}>
+                <label>Observações:</label>
+                <p>{descricao}</p>
             </div>
         </div>
     )

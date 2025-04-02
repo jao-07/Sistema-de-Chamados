@@ -28,19 +28,28 @@ const NovoChamado = () => {
   const [erroDados, SetErroDados] = useState(false)
   const [areaSelecionada, SetAreaSelecionada] = useState(null)
   const [servicoSelecionado, SetServicoSelecionado] = useState(0)
+  const [urgencia,SetUrgencia] = useState(1)
 
   //Usa o hook useForm para o controle e validação dos inputs do formulário
-  const {register, handleSubmit, setValue, reset, formState: {errors} } = useForm({
+  const {register, handleSubmit, watch, setValue, reset, formState: {errors} } = useForm({
     resolver: yupResolver(schema),
     defaultValues: {
       solicitante: "",
-      emailInstitucional: ""
+      emailInstitucional: "",
+      servico: "",
+      assunto: "",
+      descricao: "",
+      urgencia: 1
     },
   })
 
   const dadosDoBanco = {
     solicitante: "João Silva",
-    emailInstitucional: "joao@email.com"
+    emailInstitucional: "joao@email.com",
+    urgencia: 2,
+    servico: 34,
+    descricao: "Descrição obtida por outro chamado",
+    assunto: "Assunto obtido por outro chamado"
   }
 
   const esperar = (ms) => new Promise(resolve => setTimeout(resolve, ms));
@@ -97,19 +106,19 @@ const NovoChamado = () => {
   ]
 
   //Vetor de objetos utilizado para a parte da escolha do serviço
-  const vetorSelectServico =
+  const servicos =
   [
-    {id: 3, id_setor: 1, id_categoria: 2, nome:"Impressora"},
-    {id: 4, id_setor: 1, id_categoria: 2, nome:"Defeito Computador"},
-    {id: 14, id_setor: 1, id_categoria: 1, nome:"Direito autoral"},
-    {id: 34, id_setor: 1, id_categoria: 1, nome:"Problema no cabo"},
-    {id: 16, id_setor: 1, id_categoria: 3, nome:"Alterar email"},
-    {id: 18, id_setor: 1, id_categoria: 3, nome:"Erro no acesso"},
-    {id: 21, id_setor: 1, id_categoria: 4, nome:"Cadastro sala"},
-    {id: 25, id_setor: 1, id_categoria: 4, nome:"IBM Notes"},
+    {id: 3, id_setor: 1, id_categoria: 2, nome:"Impressora", descricao:"Resolver problema de impressora"},
+    {id: 4, id_setor: 1, id_categoria: 2, nome:"Defeito Computador", descricao:"Resolver problema de computador"},
+    {id: 14, id_setor: 1, id_categoria: 1, nome:"Direito autoral", descricao:"Resolver problema de direito autoral"},
+    {id: 34, id_setor: 1, id_categoria: 1, nome:"Problema no cabo", descricao:"Resolver problema de cabo"},
+    {id: 16, id_setor: 1, id_categoria: 3, nome:"Alterar email", descricao:"Resolver problema de alteração de email"},
+    {id: 18, id_setor: 1, id_categoria: 3, nome:"Erro no acesso", descricao:"Resolver problema de acesso"},
+    {id: 21, id_setor: 1, id_categoria: 4, nome:"Cadastro sala", descricao:"Resolver problema de cadastro de sala"},
+    {id: 25, id_setor: 1, id_categoria: 4, nome:"IBM Notes", descricao:"Resolver problema de IBM Notes"},
   ]
 
-  const vetorCategoriasServico = [
+  const categoria_servicos = [
     {id_categoria: 1, categoria: "Rede", descricao:"Serviços de rede"},
     {id_categoria: 2, categoria: "Suporte", descricao:"Serviços de suporte"},
     {id_categoria: 3, categoria: "Email", descricao:"Serviços de email"},
@@ -139,7 +148,7 @@ const NovoChamado = () => {
             <input 
               type="number"
               placeholder="Digite o número do chamado"
-              style={{width: "50%"}}
+              style={{width: "70%"}}
               onChange={(event) => SetValorInputID(event.target.value)}
             />
             <button onClick={() => handleClickID(valorInputID)}>
@@ -200,13 +209,41 @@ const NovoChamado = () => {
               idSelecionado={areaSelecionada}
             />
             <Select 
-              vetorServicos={vetorSelectServico} 
-              vetorCategorias={vetorCategoriasServico} 
-              titulo="Escolha o serviço" 
-              opcaoSelecionada={servicoSelecionado} 
-              onEscolha={SetServicoSelecionado}
+              vetorServicos={servicos} 
+              vetorCategorias={categoria_servicos} 
+              titulo="Escolha o serviço"
+              nome="servico"
+              register={register}
+              error={errors.servico}
+              selectedValue={watch().servico}
             />
-            {servicoSelecionado}
+          </div>
+
+          <div className={styles.secao}>
+            <h2>Descrição do problema</h2>
+            <FormInput
+              label="Assunto do chamado"
+              nome="assunto"
+              placeholder="Digite o assunto do chamado"
+              register={register}
+              error={errors.emailInstitucional}
+            />
+
+            <FormInput
+              label="Descrição do problema"
+              nome="descricao"
+              type='textarea'
+              placeholder="Digite a descrição do problema"
+              register={register}
+              error={errors.emailInstitucional}
+            />
+
+            <label>Escolha a urgência do problema</label>
+            <select {...register("urgencia")}>
+              <option value={1}>Normal</option>
+              <option value={2}>Urgente (Ônus reversível)</option>
+              <option value={3}>Emergência (Ônus irreversível)</option>
+            </select>
           </div>
 
           <div className={styles.submitButton}>
@@ -216,6 +253,7 @@ const NovoChamado = () => {
           </div>
 
         </form>
+        <pre>{JSON.stringify(watch(), null, 2)}</pre>
       </div>
     </div>
   )
