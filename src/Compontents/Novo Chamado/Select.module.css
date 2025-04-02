@@ -1,3 +1,7 @@
 .observacoes{
     margin: 30px 0;
 }
+
+.erro{
+    color: red;
+}

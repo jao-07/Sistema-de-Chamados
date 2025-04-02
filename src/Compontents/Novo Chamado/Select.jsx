@@ -38,10 +38,13 @@ const Select = ({vetorServicos, vetorCategorias, titulo, register, nome, error, 
                 }
             </select>
             {error && <p className={styles.erro}>{error.message}</p>}
-            <div className={styles.observacoes}>
-                <label>Observações:</label>
-                <p>{descricao}</p>
-            </div>
+            {selectedValue && 
+                <div className={styles.observacoes}>
+                    <label>Observações:</label>
+                    <p>{vetorServicos.find(item => item.id == selectedValue).descricao}</p>
+
+                </div>
+            }
         </div>
     )
 }

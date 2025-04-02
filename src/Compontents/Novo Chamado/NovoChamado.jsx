@@ -15,7 +15,10 @@ import Select from './Select';
 //Define as regras de cada input utilizando a biblioteca yup
 const schema = yup.object({
   solicitante: yup.string().required("O nome é obrigatório!"),
-  emailInstitucional: yup.string().email("Email inválido!").required("O email é obrigatório!")
+  emailInstitucional: yup.string().email("Email inválido!").required("O email é obrigatório!"),
+  servico: yup.string().required("Obrigatório selecionar o serviço!"),
+  assunto: yup.string().required("Obrigatório escrever o assunto!"),
+  descricao: yup.string().required("Obrigatório escrever a descrição!").min(20, "Descrição muito curta!")
 })
 
 
@@ -27,29 +30,18 @@ const NovoChamado = () => {
   const [valorInputID, SetValorInputID] = useState(0)
   const [erroDados, SetErroDados] = useState(false)
   const [areaSelecionada, SetAreaSelecionada] = useState(null)
-  const [servicoSelecionado, SetServicoSelecionado] = useState(0)
-  const [urgencia,SetUrgencia] = useState(1)
 
   //Usa o hook useForm para o controle e validação dos inputs do formulário
   const {register, handleSubmit, watch, setValue, reset, formState: {errors} } = useForm({
     resolver: yupResolver(schema),
     defaultValues: {
-      solicitante: "",
-      emailInstitucional: "",
-      servico: "",
-      assunto: "",
-      descricao: "",
       urgencia: 1
     },
   })
 
   const dadosDoBanco = {
-    solicitante: "João Silva",
-    emailInstitucional: "joao@email.com",
-    urgencia: 2,
-    servico: 34,
-    descricao: "Descrição obtida por outro chamado",
-    assunto: "Assunto obtido por outro chamado"
+    solicitante: "João",
+    emailInstitucional: "email@aleatorio.br"
   }
 
   const esperar = (ms) => new Promise(resolve => setTimeout(resolve, ms));
@@ -208,15 +200,18 @@ const NovoChamado = () => {
               onEscolha={selecionaArea} 
               idSelecionado={areaSelecionada}
             />
-            <Select 
-              vetorServicos={servicos} 
-              vetorCategorias={categoria_servicos} 
-              titulo="Escolha o serviço"
-              nome="servico"
-              register={register}
-              error={errors.servico}
-              selectedValue={watch().servico}
-            />
+            {areaSelecionada &&
+              <Select 
+                vetorServicos={servicos} 
+                vetorCategorias={categoria_servicos} 
+                titulo="Escolha o serviço"
+                nome="servico"
+                placeholder="Escolha o serviço requerido"
+                register={register}
+                error={errors.servico}
+                selectedValue={watch().servico}
+              />
+            }
           </div>
 
           <div className={styles.secao}>
@@ -226,7 +221,7 @@ const NovoChamado = () => {
               nome="assunto"
               placeholder="Digite o assunto do chamado"
               register={register}
-              error={errors.emailInstitucional}
+              error={errors.assunto}
             />
 
             <FormInput
@@ -235,7 +230,7 @@ const NovoChamado = () => {
               type='textarea'
               placeholder="Digite a descrição do problema"
               register={register}
-              error={errors.emailInstitucional}
+              error={errors.descricao}
             />
 
             <label>Escolha a urgência do problema</label>
