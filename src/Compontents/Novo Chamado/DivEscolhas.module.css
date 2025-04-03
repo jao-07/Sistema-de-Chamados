@@ -1,7 +1,15 @@
 .container{
-    display: flex;
-    justify-content: space-between;
     margin-bottom: 40px;
+}
+
+.chooses{
+    display: flex;
+    justify-content: space-around;
+    text-align: center;
+}
+
+.chooses p{
+    font-size: 16px;
 }
 
 .iconSelected{
@@ -32,4 +40,10 @@
 .iconUnselected:hover{
     cursor: pointer;
     transform: scale(1.05);
+    border: 1px solid #ccc;
 }
+
+.erro{
+    color: red;
+}
+

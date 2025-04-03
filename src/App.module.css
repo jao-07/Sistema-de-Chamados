@@ -83,3 +83,11 @@ select:focus {
   box-shadow: 0 0 5px rgba(0, 123, 255, 0.3);
   outline: none;
 }
+
+a{
+  color: green;
+}
+
+a:hover{
+  color: rgb(0, 255, 0);
+}

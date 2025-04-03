@@ -11,6 +11,7 @@ import PopUpErro from './PopUpErro';
 import Loading from './Loading';
 import DivEscolhas from './DivEscolhas';
 import Select from './Select';
+import SelectDefault from './SelectDefault';
 
 //Define as regras de cada input utilizando a biblioteca yup
 const schema = yup.object({
@@ -18,7 +19,14 @@ const schema = yup.object({
   emailInstitucional: yup.string().email("Email inválido!").required("O email é obrigatório!"),
   servico: yup.string().required("Obrigatório selecionar o serviço!"),
   assunto: yup.string().required("Obrigatório escrever o assunto!"),
-  descricao: yup.string().required("Obrigatório escrever a descrição!").min(20, "Descrição muito curta!")
+  descricao: yup.string().required("Obrigatório escrever a descrição!").min(20, "Descrição muito curta!"),
+  areaServico: yup.number().required("Origatório escolher a área do serviço!"),
+  infoContato: yup.number().required("Origatório escolher uma opção para contato!"),
+  departamento: yup.string().required("Obrigatório informar o departamento!"),
+  bloco_sala: yup.string().required("Obrigatório informar o bloco/sala!"),
+  ramal: yup.number().required("Obrigratório informar o ramal!").integer("Ramal inválido!").positive("Ramal inválido!").transform((value, originalValue) => originalValue === "" ? undefined : value),
+  contatosAdicionais: yup.string().required("Obrigatório informar contatos adicionais para o atendimento!"),
+  tipoHorario: yup.number().required("Origatório escolher o horário a ser contactado!")
 })
 
 
@@ -29,10 +37,9 @@ const NovoChamado = () => {
   const [idChamado, SetIdChamado] = useState(0)
   const [valorInputID, SetValorInputID] = useState(0)
   const [erroDados, SetErroDados] = useState(false)
-  const [areaSelecionada, SetAreaSelecionada] = useState(null)
 
   //Usa o hook useForm para o controle e validação dos inputs do formulário
-  const {register, handleSubmit, watch, setValue, reset, formState: {errors} } = useForm({
+  const {register, handleSubmit, watch, setValue, clearErrors, reset, formState: {errors} } = useForm({
     resolver: yupResolver(schema),
     defaultValues: {
       urgencia: 1
@@ -83,11 +90,6 @@ const NovoChamado = () => {
     SetErroDados()
   }
 
-  const selecionaArea = (id) => {
-    SetAreaSelecionada(id)
-    console.log("Area selecionada: " + areaSelecionada)
-  }
-
   //Vetor de objetos utilizado para a parte da escolha da área do serviço
   const vetorArea = 
   [
@@ -118,6 +120,35 @@ const NovoChamado = () => {
     {id_categoria: 5, categoria: "ACBio", descricao:"Serviços de ACBio"},
     {id_categoria: 6, categoria: "Infraestrutura", descricao:"Serviços de infraestrutura"},
     {id_categoria: 7, categoria: "Manutenção Predial", descricao:"Serviços de manutenção predial"},
+  ]
+
+  const vetorInfos = 
+  [
+    {id: 1, icone: "FaI", titulo:"Informações cadastradas no Intranet"},
+    {id: 2, icone: "FaClock", titulo:"Outras informações"}
+  ]
+
+  const vetorHorarios = 
+  [
+    {id: 1, icone: "FaArrowRightLong", titulo:"Horário corrido"},
+    {id: 2, icone: "FaPause", titulo:"Horário partido"},
+    {id: 3, icone: "FaAsterisk", titulo:"Horário variado"}
+  ]
+
+  const departamentos = 
+  [
+    {id: 1, nome: "Administração"},
+    {id: 2, nome: "Genética, Ecologia e Evolução"},
+    {id: 3, nome: "Bioquímica e Imunologia"},
+    {id: 4, nome: "Botânica"}
+  ]
+
+  const blocos_salas = 
+  [
+    {id: 574, nome: "- Não se aplica -"},
+    {id: 490, nome: "A1"},
+    {id: 78, nome: "B2 - 162 - SALA DE SEMINÁRIOS"},
+    {id: 20, nome: "C1 - 120 - SEÇÃO DE COMPRAS"}
   ]
 
 
@@ -197,10 +228,13 @@ const NovoChamado = () => {
             <DivEscolhas 
               vetor={vetorArea} 
               size={80} 
-              onEscolha={selecionaArea} 
-              idSelecionado={areaSelecionada}
+              setValue={setValue}
+              clearErrors={clearErrors}
+              nome="areaServico"
+              error={errors.areaServico}
+              selectedValue={watch().areaServico}
             />
-            {areaSelecionada &&
+            {watch().areaServico &&
               <Select 
                 vetorServicos={servicos} 
                 vetorCategorias={categoria_servicos} 
@@ -239,6 +273,98 @@ const NovoChamado = () => {
               <option value={2}>Urgente (Ônus reversível)</option>
               <option value={3}>Emergência (Ônus irreversível)</option>
             </select>
+          </div>
+
+          <div className={styles.secao}>
+            <h2>Informações de Contato</h2>
+            <p>Quais informações utilizar para esse chamado?</p>
+            <DivEscolhas 
+              vetor={vetorInfos} 
+              size={80} 
+              setValue={setValue}
+              clearErrors={clearErrors}
+              nome="infoContato"
+              error={errors.infoContato}
+              selectedValue={watch().infoContato}
+            />
+            {watch().infoContato == 1 && 
+              <div className={styles.conteudo} style={{border: '1px solid black',borderRadius: '10px', paddingLeft: '60px', marginBottom: '40px'}}>
+                <div className={styles.iconExclamacao}>
+                  <FaExclamationCircle />
+                </div>
+                <div>
+                  <h2>Atenção!</h2>
+                  <p>Confira se seus dados na Intranet estão atualizados!</p>
+                  <p>Para atualizá-los, acesse <a href="https://sistemas.icb.ufmg.br/intranet/">Intranet</a></p>
+                </div>
+              </div>
+            }
+            {watch().infoContato &&
+            <div className={styles.inputsSecao}>
+              <div className={styles.coluna}>
+                <SelectDefault 
+                  vetor={departamentos}
+                  titulo="Departamento"
+                  nome="departamento"
+                  placeholder="Escolha o departamento"
+                  register={register}
+                  error={errors.departamento}
+                  selectedValue={watch().departamento}
+                />
+
+                <FormInput
+                  label="Ramal"
+                  nome="ramal"
+                  type='number'
+                  placeholder="Digite o ramal"
+                  register={register}
+                  error={errors.ramal}
+                />
+              </div>
+
+              <div className={styles.coluna}>
+                <SelectDefault 
+                  vetor={blocos_salas}
+                  titulo="Bloco/Sala"
+                  nome="bloco_sala"
+                  placeholder="Escolha o bloco/sala"
+                  register={register}
+                  error={errors.bloco_sala}
+                  selectedValue={watch().bloco_sala}
+                />
+              
+                <FormInput
+                  label="Contatos adicionais"
+                  nome="contatosAdicionais"
+                  placeholder="Digite os contatos adicionais"
+                  register={register}
+                  error={errors.contatosAdicionais}
+                />
+              </div>
+            </div>
+            }
+            <p>Qual horário deseja ser contactado?</p>
+            <DivEscolhas 
+              vetor={vetorHorarios} 
+              size={80} 
+              setValue={setValue}
+              clearErrors={clearErrors}
+              nome="tipoHorario"
+              error={errors.tipoHorario}
+              selectedValue={watch().tipoHorario}
+            />
+            
+            fazer o componente Horário e configurar para cada tipo de horário
+            {/* {
+              tipoHorario &&
+              <p>Explicação do tipo de horário<p/>
+              <Horarios 
+                setValue={setValue}
+                nome="horarios"
+                error=""
+              />
+            } */ }
+
           </div>
 
           <div className={styles.submitButton}>
