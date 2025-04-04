@@ -1,0 +1,21 @@
+.inputs{
+    display: flex;
+    justify-content: space-between;
+}
+
+.linha {
+    display: grid;
+    grid-template-columns: auto auto auto auto auto auto auto;
+    text-align: end;
+    align-items: center;
+    gap: 10px;
+    margin-top: 40px;
+}
+
+.linha div{
+    display: flex;
+}
+
+.linha div p{
+    margin-right: 20px;
+}

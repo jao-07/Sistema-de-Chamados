@@ -2,7 +2,7 @@ import "@fontsource/poppins";
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 import styles from './App.module.css'
 import TelaInicial from './Compontents/Tela Inicial/TelaInicial';
-import Header from './Compontents/Header';
+import Header from './Compontents/Header/Header';
 import ChamadosAnteriores from './Compontents/Chamados Anteriores/ChamadosAnteriores';
 import NovoChamado from './Compontents/Novo Chamado/NovoChamado';
 
