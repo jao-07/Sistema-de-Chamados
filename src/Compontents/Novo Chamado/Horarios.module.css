@@ -19,3 +19,12 @@
 .linha div p{
     margin-right: 20px;
 }
+
+.erro{
+    color: red;
+}
+
+.erroInput {
+    border: 1px solid red;
+    background-color: #ffe5e5;
+}

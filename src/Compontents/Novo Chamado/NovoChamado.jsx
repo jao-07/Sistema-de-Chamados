@@ -14,6 +14,16 @@ import Select from './Select';
 import SelectDefault from './SelectDefault';
 import Horarios from './Horarios';
 
+const timeValidation = (value) => {
+  if (!Array.isArray(value) || value.length < 2) return false;
+
+  const [start, end] = value;
+  if (!start || !end) return false;
+  if(start == "" || end == "") return false;
+
+  return start < end;
+};
+
 //Define as regras de cada input utilizando a biblioteca yup
 const schema = yup.object({
   //nome do solicitante
@@ -84,28 +94,66 @@ const schema = yup.object({
     .required("Origatório escolher o horário a ser contactado!"),
 
   //Horários definidos nos campos de horário corrido
+  //É definido como um array de horarios (string)
   horarioCorrido: 
     yup.array()
     .of(
       yup.string()
-      .matches(/^([0-9]{2}):([0-9]{2})$/, "Formato inválido!"))
-      .when("tipoHorario", { is: 1, then: (schema) => schema.required("Informe a disponibilidade de horário!"), }),
+      .transform((value, originalValue) => originalValue === "" ? undefined : value)
+      .matches(/^([0-9]{2}):([0-9]{2})$/, "Formato inválido!")//Verifica se o formato é válido
+      .required("Obrigatório preencher o horário") //Obrigatório estar preenchido os horários
+    ) 
+    .length(2) //Verifica se tem dois horários no array
+    .test("valid-range", "Horários passados inválidos!", timeValidation) //utiliza a função auxiliar para testar se o horário é válido
+    .when("tipoHorario", { is: 1, //Verifica se o tipo de horário selecionado foi o Corrido
+      then: (schema) => schema.required("Informe o horário corrido"), //Se for, esses horários são obrigatórios
+      otherwise: (schema) => schema.notRequired(), // Caso não esteja selecionado o tipo Corrido, então não é necessário estar preenchido
+    }),
 
-  //Horários definidos nos campos de horário corrido
-  horarioPartido: 
-    yup.array()
+  //Horários definidos nos campos de horário partido
+  //É definido como uma matriz, de dois arrays com dois horáios (string) cada
+  horarioPartido: yup
+    .array()
     .of(
-      yup.string()
-      .matches(/^([0-9]{2}):([0-9]{2})$/, "Formato inválido!"))
-      .when("tipoHorario", { is: 2, then: (schema) => schema.required("Informe a disponibilidade de horário!"), }),
+      yup
+        .array()
+        .of(
+          yup
+            .string()
+            .transform((value, originalValue) => originalValue === "" ? undefined : value)
+            .matches(/^([0-9]{2}):([0-9]{2})$/, "Formato inválido") //Verifica se o formato é válido
+            .required("Obrigatório preencher o horário")
+        )
+        .length(2)
+        .test("valid-range", "Horários passados inválidos!", timeValidation)
+    )
+    .when("tipoHorario", {
+      is: 2,
+      then: (schema) => schema.length(2).required("Informe os horários do turno partido"),
+      otherwise: (schema) => schema.notRequired(),
+    }),
   
-  //Horários definidos nos campos de horário corrido
-  horarioVariado: 
-    yup.array()
+  //Horários definidos nos campos de horário variado
+  horarioVariado: yup
+    .array()
     .of(
-      yup.string()
-      .matches(/^([0-9]{2}):([0-9]{2})$/, "Formato inválido!"))
-      .when("tipoHorario", { is: 3, then: (schema) => schema.required("Informe a disponibilidade de horário!"), }),
+      yup
+        .array()
+        .of(
+          yup
+            .string()
+            .transform((value, originalValue) => originalValue === "" ? undefined : value)
+            .matches(/^([0-9]{2}):([0-9]{2})$/, "Formato inválido")
+            .required("Obrigatório preencher o horário")
+        )
+        .length(2)
+        .test("valid-range", "Horários passados inválidos!", timeValidation)
+    )
+    .when("tipoHorario", {
+      is: 3,
+      then: (schema) => schema.length(10).required("Informe todos os dias da semana"),
+      otherwise: (schema) => schema.notRequired(),
+    }),
 })
 
 
