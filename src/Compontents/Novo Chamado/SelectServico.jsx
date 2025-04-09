@@ -1,24 +1,8 @@
 import React from 'react'
 import { useState, useEffect } from 'react'
-import styles from './Select.module.css'
+import styles from './SelectServico.module.css'
 
-const Select = ({vetorServicos, vetorCategorias, titulo, register, nome, error, placeholder, selectedValue}) => {
-
-    const [descricao, SetDescricao] = useState("")
-
-    useEffect(() => {
-        const getDados = async (id) => {
-            try{
-                const response = await Promise.resolve(id)
-                SetDescricao(response)
-            }
-            catch(error){
-                console.error("Erro ao obter a descrição do serviço selecionado")
-            }
-        }
-        getDados()
-    }, [])
-
+const SelectServico = ({vetorServicos, vetorCategorias, titulo, register, nome, error, placeholder, selectedValue}) => {
     return (
         <div>
             <label>{titulo}</label>
@@ -49,4 +33,4 @@ const Select = ({vetorServicos, vetorCategorias, titulo, register, nome, error, 
     )
 }
 
-export default Select;
+export default SelectServico;

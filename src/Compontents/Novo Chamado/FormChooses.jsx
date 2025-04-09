@@ -1,13 +1,13 @@
 import React from 'react';
-import styles from './DivEscolhas.module.css'
+import styles from './FormChooses.module.css'
 import DynamicIcon from '../Helpers/DynamicIcon';
 
-const DivEscolhas = ({vetor, size, nome, error, setValue, clearErrors, selectedValue}) => {
+const FormChooses = ({vetor, size, nome, error, setValue, clearErrors, selectedValue}) => {
 
-    const handleClickDivEscolhas = (nome, value) => {
+    const handleClickFormChooses = (nome, value) => {
         setValue(nome, value)
         clearErrors(nome)
-      }
+    }
 
     return (
         <div className={styles.container}>
@@ -15,7 +15,7 @@ const DivEscolhas = ({vetor, size, nome, error, setValue, clearErrors, selectedV
                 {
                     vetor.map((item) => {
                         return(
-                            <div key={item.id} className={selectedValue == item.id ? styles.iconSelected : styles.iconUnselected} onClick={() => handleClickDivEscolhas(nome, item.id)}>
+                            <div key={item.id} className={selectedValue == item.id ? styles.iconSelected : styles.iconUnselected} onClick={() => handleClickFormChooses(nome, item.id)}>
                                 <DynamicIcon name={item.icone} size={size} />
                                 <p>{item.titulo}</p>
                             </div>
@@ -28,4 +28,4 @@ const DivEscolhas = ({vetor, size, nome, error, setValue, clearErrors, selectedV
     )
 }
 
-export default DivEscolhas;
+export default FormChooses;

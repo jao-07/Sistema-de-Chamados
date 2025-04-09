@@ -9,8 +9,8 @@ import styles from "./NovoChamado.module.css"
 import FormInput from './FormInput';
 import PopUpErro from './PopUpErro';
 import Loading from './Loading';
-import DivEscolhas from './DivEscolhas';
-import Select from './Select';
+import FormChooses from './FormChooses';
+import SelectServico from './SelectServico'; 
 import SelectDefault from './SelectDefault';
 import Horarios from './Horarios';
 
@@ -160,6 +160,21 @@ const schema = yup.object({
         .required("Informe os horários do turno variado"),
     otherwise: () => yup.mixed().notRequired()
   }),
+
+  relacionadoEquipamento:
+    yup.number()
+      .required("Obrigatório informar se o chamado envolve algum equipamento!")
+      .transform((value, originalValue) => originalValue === "" ? undefined : value),
+
+  seuComputador:
+    yup.number()
+      .required("Obrigatório informar se o chamado envolve algum equipamento!")
+      .transform((value, originalValue) => originalValue === "" ? undefined : value),
+
+  origemEquipamento:
+    yup.number()
+      .required("Obrigatório informar se o chamado envolve algum equipamento!")
+      .transform((value, originalValue) => originalValue === "" ? undefined : value),
 })
 
 
@@ -268,6 +283,17 @@ const NovoChamado = () => {
       { id: 3, icone: "FaAsterisk", titulo: "Horário variado" }
     ]
 
+  const vetorSimOuNao = [
+    {id: 1, icone: "FaCircleCheck", titulo: "Sim"},
+    {id: 2, icone: "FaCircleXmark", titulo: "Não"}
+  ]
+
+  const vetorOrigemEquipamento = [
+    {id: 1, icone: "FaBuildingColumns", titulo: "Patrimoniado"},
+    {id: 2, icone: "FaVial", titulo: "Projeto de pesquisa"},
+    {id: 3, icone: "FaBriefcase", titulo: "Particular"}
+  ]
+
   const departamentos =
     [
       { id: 1, nome: "Administração" },
@@ -358,7 +384,7 @@ const NovoChamado = () => {
           <div className={styles.secao}>
             <h2>Informações do serviço</h2>
             <p>Escolha a área do serviço desejado</p>
-            <DivEscolhas
+            <FormChooses
               vetor={vetorArea}
               size={80}
               setValue={setValue}
@@ -368,7 +394,7 @@ const NovoChamado = () => {
               selectedValue={watch().areaServico}
             />
             {watch().areaServico &&
-              <Select
+              <SelectServico
                 vetorServicos={servicos}
                 vetorCategorias={categoria_servicos}
                 titulo="Escolha o serviço"
@@ -411,7 +437,7 @@ const NovoChamado = () => {
           <div className={styles.secao}>
             <h2>Informações de Contato</h2>
             <p>Quais informações utilizar para esse chamado?</p>
-            <DivEscolhas
+            <FormChooses
               vetor={vetorInfos}
               size={80}
               setValue={setValue}
@@ -477,7 +503,7 @@ const NovoChamado = () => {
               </div>
             }
             <p>Qual horário deseja ser contactado?</p>
-            <DivEscolhas
+            <FormChooses
               vetor={vetorHorarios}
               size={80}
               setValue={setValue}
@@ -497,6 +523,51 @@ const NovoChamado = () => {
             }
 
           </div>
+
+          <div className={styles.secao}>
+            <h2>Informações sobre o equipamento</h2>
+            <p>O chamado está relacionado a algum equipamento (Computadores, Impressoras, Roteadores)?</p>
+            <FormChooses
+              vetor={vetorSimOuNao}
+              size={20}
+              setValue={setValue}
+              clearErrors={clearErrors}
+              nome="relacionadoEquipamento"
+              error={errors.relacionadoEquipamento}
+              selectedValue={watch().relacionadoEquipamento}
+            />
+
+            { watch().relacionadoEquipamento == 1 &&
+              <div className={styles.inputsSecao}>
+                <div className={styles.coluna}>
+                  <p>O chamado é para o seu computador?</p>
+                  <FormChooses
+                    vetor={vetorSimOuNao}
+                    size={20}
+                    setValue={setValue}
+                    clearErrors={clearErrors}
+                    nome="seuComputador"
+                    error={errors.seuComputador}
+                    selectedValue={watch().seuComputador}
+                  />
+                </div>
+
+                <div className={styles.coluna}>
+                  <p style={{paddingLeft: "60px"}}>Qual a origem do equipamento?</p>
+                  <FormChooses
+                    vetor={vetorOrigemEquipamento}
+                    size={20}
+                    setValue={setValue}
+                    clearErrors={clearErrors}
+                    nome="origemEquipamento"
+                    error={errors.origemEquipamento}
+                    selectedValue={watch().origemEquipamento}
+                  />
+                </div>
+              </div>
+            }
+          </div>
+          
 
           <div className={styles.submitButton}>
             <button type="submit">

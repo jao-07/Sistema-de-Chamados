@@ -9,7 +9,7 @@ const DynamicIcon = ({name, size=20}) => {
         return <span>Ícone não encontrado!</span>
     }
 
-    return <IconComponent color="green" size={size} />
+    return <IconComponent color={name == "FaCircleXmark" ? "red" : "green"} size={size} />
 }
 
 export default DynamicIcon;
