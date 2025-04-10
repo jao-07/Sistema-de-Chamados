@@ -1,7 +1,7 @@
 import React from 'react';
 import styles from './FormInput.module.css'
 
-const FormInput = ({label, nome, type='text', register, error, placeholder}) => {
+const FormInput = ({label, nome, type='text', register, error=null, placeholder}) => {
 
   return (
     type == "textarea" ?

@@ -3,7 +3,7 @@ import styles from './SelectDefault.module.css'
 
 const SelectDefault = ({vetor, titulo, register, nome, error, placeholder, selectedValue}) => {
   return (
-    <div>
+    <div className={styles.container}>
         <label>{titulo}</label>
         <select {...register(nome)}>
             {!selectedValue && <option value="" hidden>{placeholder}</option>}

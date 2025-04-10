@@ -1,3 +1,12 @@
 .erro{
     color: red;
 }
+
+.container{
+    width: 100%;
+    margin-bottom: 30px;
+}
+
+.container select{
+    margin: 10px 0;
+}

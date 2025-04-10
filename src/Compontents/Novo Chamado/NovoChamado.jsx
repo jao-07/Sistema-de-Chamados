@@ -115,7 +115,7 @@ const schema = yup.object({
   }),
 
   //Horários definidos nos campos de horário partido
-  //É definido como uma matriz, de dois arrays com dois horáios (string) cada
+  //É definido como uma matriz, de dois arrays com dois horários (string) cada
   horarioPartido: yup.mixed().when("tipoHorario", {
     is: 2,
     then: () =>
@@ -139,6 +139,7 @@ const schema = yup.object({
   }),
   
   //Horários definidos nos campos de horário variado
+  //É definido como uma matriz com 10 vetores, com dois horários (string) cada
   horarioVariado: yup.mixed().when("tipoHorario", {
     is: 3,
     then: () =>
@@ -161,20 +162,52 @@ const schema = yup.object({
     otherwise: () => yup.mixed().notRequired()
   }),
 
+  //Se o chamado está relacionado a algum equipamento ou não
+  //1 = sim, 2 = não
   relacionadoEquipamento:
     yup.number()
       .required("Obrigatório informar se o chamado envolve algum equipamento!")
       .transform((value, originalValue) => originalValue === "" ? undefined : value),
 
+  //Se o chamado é para o computador do usuário ou não
+  //1 = sim, 2 = não
   seuComputador:
     yup.number()
-      .required("Obrigatório informar se o chamado envolve algum equipamento!")
+      .required("Obrigatório informar se é para seu computador ou não!")
       .transform((value, originalValue) => originalValue === "" ? undefined : value),
 
+  //Origem do equipamento
+  //1 = Patrimoniado, 2 = Projeto de pesquisa, 3 = Particular
   origemEquipamento:
     yup.number()
-      .required("Obrigatório informar se o chamado envolve algum equipamento!")
+      .required("Obrigatório informar a origem do equipamento!")
       .transform((value, originalValue) => originalValue === "" ? undefined : value),
+
+  //Número de patrimônio
+  //Obrigatório caso a origem do equipamento seja Patrimoniado
+  //Caso não seja, não é obrigatório
+  numeroPatrimonio:
+    yup.mixed().when("origemEquipamento", {
+      is: 1,
+      then: () =>
+        yup.string()
+          .required("Obrigatório informar o número de patrimônio"),
+
+      otherwise: () => yup.mixed().notRequired()
+    }),
+
+  //Número de patrimônio
+  //Obrigatório caso a origem do equipamento seja Patrimoniado
+  //Caso não seja, não é obrigatório
+  agenciaProjetoPesquisa:
+    yup.mixed().when("origemEquipamento", {
+      is: 2,
+      then: () =>
+        yup.number()
+          .required("Obrigatório informar o número de patrimônio"),
+
+      otherwise: () => yup.mixed().notRequired()
+    })
 })
 
 
@@ -309,6 +342,13 @@ const NovoChamado = () => {
       { id: 78, nome: "B2 - 162 - SALA DE SEMINÁRIOS" },
       { id: 20, nome: "C1 - 120 - SEÇÃO DE COMPRAS" }
     ]
+
+  const agenciasProjetoPesquisa = [
+    {id: 1, nome: "FAPEMIG"},
+    {id: 2, nome: "FUNDEP"},
+    {id: 3, nome: "CNPQ"},
+    {id: 4, nome: "Outro"},
+  ]
 
 
   return (
@@ -550,10 +590,40 @@ const NovoChamado = () => {
                     error={errors.seuComputador}
                     selectedValue={watch().seuComputador}
                   />
+
+                  { watch().origemEquipamento == 2 &&
+                    <SelectDefault
+                      vetor={agenciasProjetoPesquisa}
+                      titulo="Agência"
+                      nome="agenciaProjetoPesquisa"
+                      placeholder="Escolha a agência"
+                      register={register}
+                      error={errors.agenciaProjetoPesquisa}
+                      selectedValue={watch().agenciaProjetoPesquisa}
+                    />
+                  }
+
+                  { watch().origemEquipamento == 2 &&
+                    <FormInput
+                      label="Número do projeto"
+                      nome="numeroProjeto"
+                      placeholder="Digite o número do projeto"
+                      register={register}
+                      error={errors.numeroProjeto}
+                    />
+                  }
+
+                  <FormInput
+                    label="IP do Equipamento (Se souber)"
+                    nome="ipEquipamento"
+                    placeholder="Digite o IP"
+                    register={register}
+                  />
+                  
                 </div>
 
                 <div className={styles.coluna}>
-                  <p style={{paddingLeft: "60px"}}>Qual a origem do equipamento?</p>
+                  <p>Qual a origem do equipamento?</p>
                   <FormChooses
                     vetor={vetorOrigemEquipamento}
                     size={20}
@@ -563,6 +633,37 @@ const NovoChamado = () => {
                     error={errors.origemEquipamento}
                     selectedValue={watch().origemEquipamento}
                   />
+
+                  { watch().origemEquipamento == 2 && watch().agenciaProjetoPesquisa == 4 &&
+                    <FormInput
+                      label="Informe o nome da agência"
+                      nome="agenciaOutro"
+                      placeholder="Digite o nome da agência"
+                      register={register}
+                      error={errors.agenciaOutro}
+                    />
+                  }
+
+                  {watch().origemEquipamento == 2 &&
+                    <FormInput
+                      label="Número do termo"
+                      nome="numeroTermo"
+                      placeholder="Digite o número do termo"
+                      register={register}
+                      error={errors.numeroTermo}
+                    />
+                  }
+
+                  { (watch().origemEquipamento == 1 || watch().origemEquipamento == 2) &&
+                    <FormInput
+                      label={watch().origemEquipamento == 1 ? "Número de patrimônio" : "Número de patrimônio (se houver)"}
+                      nome="numeroPatrimonio"
+                      placeholder="Digite o número de patrimônio"
+                      register={register}
+                      error={errors.numeroPatrimonio}
+                    />
+                  }
+                 
                 </div>
               </div>
             }
