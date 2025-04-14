@@ -22,7 +22,13 @@ const timeValidation = (value) => {
   if(start == "" || end == "") return false;
 
   return start < end;
-};
+}
+
+const ValidationInputsPP = (values) => {
+  return (
+    !!values.numeroTermo?.trim() || !!values.numeroProjeto?.trim() || !!values.numeroPatrimonioPP?.trim()
+  )
+}
 
 //Define as regras de cada input utilizando a biblioteca yup
 const schema = yup.object({
@@ -191,7 +197,7 @@ const schema = yup.object({
       is: 1,
       then: () =>
         yup.string()
-          .required("Obrigatório informar o número de patrimônio"),
+          .required("Obrigatório informar o número de patrimônio!"),
 
       otherwise: () => yup.mixed().notRequired()
     }),
@@ -199,15 +205,35 @@ const schema = yup.object({
   //Número de patrimônio
   //Obrigatório caso a origem do equipamento seja Patrimoniado
   //Caso não seja, não é obrigatório
-  agenciaProjetoPesquisa:
+  agencia:
     yup.mixed().when("origemEquipamento", {
       is: 2,
       then: () =>
         yup.number()
-          .required("Obrigatório informar o número de patrimônio"),
+          .required("Obrigatório informar a agência!")
+          .transform((value, originalValue) => originalValue === "" ? undefined : value),
 
       otherwise: () => yup.mixed().notRequired()
-    })
+    }),
+
+  agenciaOutro:
+    yup.mixed().when("agencia", {
+      is: 4,
+      then: () => 
+        yup.string()
+          .required("Obrigatório informar o nome da agência!")
+    }),
+
+  projetoPesquisa:
+    yup.object({
+      numeroTermo: yup.number("Número de termo inválido!"),
+      numeroProjeto: yup.number("Número de projeto inválido!"),
+      numeroPatrimonioPP: yup.number("Número de patrimônio inválido!")
+    }).test(
+      'pelo-menos-um', 
+      'Preencha pelo menos um dos campos: N° de Termo, de projeto ou de patrimônio', 
+      ValidationInputsPP
+    )
 })
 
 
@@ -270,6 +296,22 @@ const NovoChamado = () => {
   const handleCloseError = () => {
     SetErroDados()
   }
+
+  const handleChangePatrimonio = (event, nome) => {
+    // Obtém o valor digitado
+    let value = event.target.value;
+
+    // Remove tudo que não for número
+    value = value.replace(/\D/g, '');
+
+    //Formata o valor no padrão NNNNNNNNN-N
+    if (value.length > 1) {
+      value = value.slice(0, -1) + '-' + value.slice(-1);
+    }
+
+    // Atualiza o valor no input
+    setValue(nome, value);
+  };
 
   //Vetor de objetos utilizado para a parte da escolha da área do serviço
   const vetorArea =
@@ -595,11 +637,11 @@ const NovoChamado = () => {
                     <SelectDefault
                       vetor={agenciasProjetoPesquisa}
                       titulo="Agência"
-                      nome="agenciaProjetoPesquisa"
+                      nome="agencia"
                       placeholder="Escolha a agência"
                       register={register}
-                      error={errors.agenciaProjetoPesquisa}
-                      selectedValue={watch().agenciaProjetoPesquisa}
+                      error={errors.agencia}
+                      selectedValue={watch().agencia}
                     />
                   }
 
@@ -609,7 +651,7 @@ const NovoChamado = () => {
                       nome="numeroProjeto"
                       placeholder="Digite o número do projeto"
                       register={register}
-                      error={errors.numeroProjeto}
+                      error={errors.projetoPesquisa?.numeroProjeto}
                     />
                   }
 
@@ -634,7 +676,7 @@ const NovoChamado = () => {
                     selectedValue={watch().origemEquipamento}
                   />
 
-                  { watch().origemEquipamento == 2 && watch().agenciaProjetoPesquisa == 4 &&
+                  { watch().origemEquipamento == 2 && watch().agencia == 4 &&
                     <FormInput
                       label="Informe o nome da agência"
                       nome="agenciaOutro"
@@ -650,17 +692,31 @@ const NovoChamado = () => {
                       nome="numeroTermo"
                       placeholder="Digite o número do termo"
                       register={register}
-                      error={errors.numeroTermo}
+                      error={errors.projetoPesquisa?.numeroTermo}
                     />
                   }
 
-                  { (watch().origemEquipamento == 1 || watch().origemEquipamento == 2) &&
+                  { (watch().origemEquipamento == 1) &&
                     <FormInput
-                      label={watch().origemEquipamento == 1 ? "Número de patrimônio" : "Número de patrimônio (se houver)"}
-                      nome="numeroPatrimonio"
+                      label="Número de patrimônio"
+                      nome="numeroPatrimonioEquipamentoPatrimoniado"
                       placeholder="Digite o número de patrimônio"
                       register={register}
+                      onChange={handleChangePatrimonio}
+                      maxLength={11}
                       error={errors.numeroPatrimonio}
+                    />
+                  }
+
+                  { (watch().origemEquipamento == 2) &&
+                    <FormInput
+                      label="Número de patrimônio (se houver)"
+                      nome="numeroPatrimonioEquipamentoPP"
+                      placeholder="Digite o número de patrimônio"
+                      register={register}
+                      onChange={handleChangePatrimonio}
+                      maxLength={11}
+                      error={errors.projetoPesquisa?.numeroPatrimonioPP}
                     />
                   }
                  

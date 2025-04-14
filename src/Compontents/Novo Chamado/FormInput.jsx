@@ -1,7 +1,14 @@
 import React from 'react';
 import styles from './FormInput.module.css'
 
-const FormInput = ({label, nome, type='text', register, error=null, placeholder}) => {
+const FormInput = ({label, nome, type='text', register, error=null, onChange, ...rest}) => {
+
+  const handleChange = (event) => {
+    // Se houver a função onChange, chama ela
+    if (onChange) {
+      onChange(event, nome);
+    }
+  };
 
   return (
     type == "textarea" ?
@@ -9,9 +16,10 @@ const FormInput = ({label, nome, type='text', register, error=null, placeholder}
       <label> {label} </label> 
       <textarea
         {...register(nome)}
-        placeholder={placeholder}
+        onChange={handleChange}
+        {...rest}
       />
-      {error && <p className={styles.erro}>{error.message}</p>}
+      <p className={styles.erro} style={{ visibility: error ? 'visible' : 'hidden' }}>{error?.message || "placeholder"}</p>
     </div>
     
     :
@@ -20,9 +28,10 @@ const FormInput = ({label, nome, type='text', register, error=null, placeholder}
         <input
             {...register(nome)}
             type={type}
-            placeholder={placeholder}
+            onChange={handleChange}
+            {...rest}
         />
-        {error && <p className={styles.erro}>{error.message}</p>}
+        <p className={styles.erro} style={{ visibility: error ? 'visible' : 'hidden' }}>{error?.message || "placeholder"}</p>
     </div>
   )
 }
