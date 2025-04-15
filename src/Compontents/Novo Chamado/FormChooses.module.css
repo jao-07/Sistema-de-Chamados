@@ -1,5 +1,6 @@
 .container{
     margin-bottom: 60px;
+    min-height: 160px;
 }
 
 .chooses{

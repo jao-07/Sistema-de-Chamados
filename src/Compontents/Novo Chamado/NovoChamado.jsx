@@ -192,7 +192,7 @@ const schema = yup.object({
   //Número de patrimônio
   //Obrigatório caso a origem do equipamento seja Patrimoniado
   //Caso não seja, não é obrigatório
-  numeroPatrimonio:
+  numeroPatrimonioEquipamentoPatrimoniado:
     yup.mixed().when("origemEquipamento", {
       is: 1,
       then: () =>
@@ -226,14 +226,19 @@ const schema = yup.object({
 
   projetoPesquisa:
     yup.object({
-      numeroTermo: yup.number("Número de termo inválido!"),
-      numeroProjeto: yup.number("Número de projeto inválido!"),
-      numeroPatrimonioPP: yup.number("Número de patrimônio inválido!")
-    }).test(
-      'pelo-menos-um', 
-      'Preencha pelo menos um dos campos: N° de Termo, de projeto ou de patrimônio', 
-      ValidationInputsPP
-    )
+      numeroTermo: yup.string("Número de termo inválido!").transform((value, originalValue) => originalValue === "" ? undefined : value),
+      numeroProjeto: yup.string("Número de projeto inválido!").transform((value, originalValue) => originalValue === "" ? undefined : value),
+      numeroPatrimonioPP: yup.string("Número de patrimônio inválido!").transform((value, originalValue) => originalValue === "" ? undefined : value)
+    }).when("origemEquipamento", {
+      is: 2,
+      then: (schema) => 
+        schema.test(
+          'pelo-menos-um', 
+          'Preencha pelo menos um dos campos: N° de Termo, de projeto ou de patrimônio', 
+          ValidationInputsPP
+        ),
+        otherwise: (schema) => schema.notRequired(),
+    })
 })
 
 
@@ -281,7 +286,11 @@ const NovoChamado = () => {
   }, [idChamado])
 
   //Função que envia os dados do formulário para o backend ao clicar no botão de submit
-  const onSubmit = (data) => console.log("Dados enviados:", data);
+  const onSubmit = (data) => {
+    console.log("Dados enviados:", data)
+  }
+
+  //console.log("Erros do formulário:", errors);
 
   const handleClickID = (valorInput) => {
     if (valorInput && valorInput > 0) {
@@ -620,109 +629,163 @@ const NovoChamado = () => {
             />
 
             { watch().relacionadoEquipamento == 1 &&
-              <div className={styles.inputsSecao}>
-                <div className={styles.coluna}>
-                  <p>O chamado é para o seu computador?</p>
-                  <FormChooses
-                    vetor={vetorSimOuNao}
-                    size={20}
-                    setValue={setValue}
-                    clearErrors={clearErrors}
-                    nome="seuComputador"
-                    error={errors.seuComputador}
-                    selectedValue={watch().seuComputador}
-                  />
-
-                  { watch().origemEquipamento == 2 &&
-                    <SelectDefault
-                      vetor={agenciasProjetoPesquisa}
-                      titulo="Agência"
-                      nome="agencia"
-                      placeholder="Escolha a agência"
-                      register={register}
-                      error={errors.agencia}
-                      selectedValue={watch().agencia}
+              <>
+                <div className={styles.inputsSecao}>
+                  <div className={styles.coluna}>
+                    <p>O chamado é para o seu computador?</p>
+                    <FormChooses
+                      vetor={vetorSimOuNao}
+                      size={20}
+                      setValue={setValue}
+                      clearErrors={clearErrors}
+                      nome="seuComputador"
+                      error={errors.seuComputador}
+                      selectedValue={watch().seuComputador}
                     />
-                  }
-
-                  { watch().origemEquipamento == 2 &&
-                    <FormInput
-                      label="Número do projeto"
-                      nome="numeroProjeto"
-                      placeholder="Digite o número do projeto"
-                      register={register}
-                      error={errors.projetoPesquisa?.numeroProjeto}
+                  </div>
+                  <div className={styles.coluna}>
+                    <p>Qual a origem do equipamento?</p>
+                    <FormChooses
+                      vetor={vetorOrigemEquipamento}
+                      size={20}
+                      setValue={setValue}
+                      clearErrors={clearErrors}
+                      nome="origemEquipamento"
+                      error={errors.origemEquipamento}
+                      selectedValue={watch().origemEquipamento}
                     />
-                  }
-
-                  <FormInput
-                    label="IP do Equipamento (Se souber)"
-                    nome="ipEquipamento"
-                    placeholder="Digite o IP"
-                    register={register}
-                  />
-                  
+                  </div>
                 </div>
 
-                <div className={styles.coluna}>
-                  <p>Qual a origem do equipamento?</p>
-                  <FormChooses
-                    vetor={vetorOrigemEquipamento}
-                    size={20}
-                    setValue={setValue}
-                    clearErrors={clearErrors}
-                    nome="origemEquipamento"
-                    error={errors.origemEquipamento}
-                    selectedValue={watch().origemEquipamento}
-                  />
+                {/* Aviso sobre equipamentos particulares */}
+                {watch().origemEquipamento == 3 &&
+                  <div className={styles.conteudo} style={{ border: '1px solid black', borderRadius: '10px', paddingLeft: '60px', marginBottom: '40px' }}>
+                    <div className={styles.iconExclamacao}>
+                      <FaExclamationCircle />
+                    </div>
+                    <div>
+                      <h2>Atenção!</h2>
+                      <p>Confira se seus dados na Intranet estão atualizados!</p>
+                      <p>Para atualizá-los, acesse <a href="https://sistemas.icb.ufmg.br/intranet/">Intranet</a></p>
+                    </div>
+                  </div>
+                }
+                {/* Inputs caso o equipamento seja Patrimoniado */}
+                { watch().origemEquipamento == 1 &&
+                  <div className={styles.inputsSecao}>
+                    <div className={styles.coluna}>
+                      <FormInput
+                        label="Número de patrimônio"
+                        nome="numeroPatrimonioEquipamentoPatrimoniado"
+                        placeholder="Digite o número de patrimônio"
+                        register={register}
+                        onChange={handleChangePatrimonio}
+                        maxLength={11}
+                        error={errors.numeroPatrimonioEquipamentoPatrimoniado}
+                      />
+                    </div>
 
-                  { watch().origemEquipamento == 2 && watch().agencia == 4 &&
-                    <FormInput
-                      label="Informe o nome da agência"
-                      nome="agenciaOutro"
-                      placeholder="Digite o nome da agência"
-                      register={register}
-                      error={errors.agenciaOutro}
-                    />
-                  }
+                    <div className={styles.coluna}>
+                      <FormInput
+                        label="IP do Equipamento (Se souber)"
+                        nome="ipEquipamento"
+                        placeholder="Digite o IP"
+                        register={register}
+                      />
+                    </div>
+                  </div>
+                }
 
-                  {watch().origemEquipamento == 2 &&
-                    <FormInput
-                      label="Número do termo"
-                      nome="numeroTermo"
-                      placeholder="Digite o número do termo"
-                      register={register}
-                      error={errors.projetoPesquisa?.numeroTermo}
-                    />
-                  }
+                {/* Inputs caso o equipamento seja de Projeto de Pesquisa */}
+                { watch().origemEquipamento == 2 &&
+                  <div className={styles.inputsSecao}>
+                    <div className={styles.coluna}>
+                      <SelectDefault
+                        vetor={agenciasProjetoPesquisa}
+                        titulo="Agência"
+                        nome="agencia"
+                        placeholder="Escolha a agência"
+                        register={register}
+                        error={errors.agencia}
+                        selectedValue={watch().agencia}
+                      />
 
-                  { (watch().origemEquipamento == 1) &&
-                    <FormInput
-                      label="Número de patrimônio"
-                      nome="numeroPatrimonioEquipamentoPatrimoniado"
-                      placeholder="Digite o número de patrimônio"
-                      register={register}
-                      onChange={handleChangePatrimonio}
-                      maxLength={11}
-                      error={errors.numeroPatrimonio}
-                    />
-                  }
+                      <FormInput
+                        label="Número do projeto"
+                        nome="projetoPesquisa.numeroProjeto"
+                        placeholder="Digite o número do projeto"
+                        register={register}
+                        error={errors.projetoPesquisa?.numeroProjeto}
+                      />
 
-                  { (watch().origemEquipamento == 2) &&
-                    <FormInput
-                      label="Número de patrimônio (se houver)"
-                      nome="numeroPatrimonioEquipamentoPP"
-                      placeholder="Digite o número de patrimônio"
-                      register={register}
-                      onChange={handleChangePatrimonio}
-                      maxLength={11}
-                      error={errors.projetoPesquisa?.numeroPatrimonioPP}
-                    />
-                  }
-                 
-                </div>
-              </div>
+                      <FormInput
+                        label="IP do Equipamento (Se souber)"
+                        nome="ipEquipamento"
+                        placeholder="Digite o IP"
+                        register={register}
+                      />
+                    </div>
+
+                    <div className={styles.coluna}>
+                      { watch().agencia == 4 &&
+                        <FormInput
+                          label="Informe o nome da agência"
+                          nome="agenciaOutro"
+                          placeholder="Digite o nome da agência"
+                          register={register}
+                          error={errors.agenciaOutro}
+                        />
+                      }
+
+                      <FormInput
+                        label="Número do termo"
+                        nome="projetoPesquisa.numeroTermo"
+                        placeholder="Digite o número do termo"
+                        register={register}
+                        error={errors.projetoPesquisa?.numeroTermo}
+                      />
+
+                      <FormInput
+                        label="Número de patrimônio (se houver)"
+                        nome="projetoPesquisa.numeroPatrimonioPP"
+                        placeholder="Digite o número de patrimônio"
+                        register={register}
+                        onChange={handleChangePatrimonio}
+                        maxLength={11}
+                        error={errors.projetoPesquisa?.numeroPatrimonioPP}
+                      />
+                    </div>
+                  </div>
+                }
+
+                {/* Inputs caso o equipamento seja Particular */}
+                { watch().origemEquipamento == 3 &&
+                  <div className={styles.inputsSecao}>
+                    <div className={styles.coluna}>
+                      <FormInput
+                        label="Nome do responsável pela guarda"
+                        nome="responsavelGuarda"
+                        placeholder="Digite o nome do responsável"
+                        register={register}
+                        error={errors.responsavelGuarda}
+                      />
+                      Fazer o erro desse input e o alerta sobre equipamentos particulares
+                    </div>
+
+                    <div className={styles.coluna}>
+                      <FormInput
+                        label="IP do Equipamento (Se souber)"
+                        nome="ipEquipamento"
+                        placeholder="Digite o IP"
+                        register={register}
+                      />
+                    </div>
+                  </div>
+                }
+                
+              </>
             }
+            {errors?.projetoPesquisa?.message && watch().relacionadoEquipamento == 1 && watch().origemEquipamento == 2 && <p style={{color: "red"}}>{errors.projetoPesquisa.message}</p>}
           </div>
           
 
