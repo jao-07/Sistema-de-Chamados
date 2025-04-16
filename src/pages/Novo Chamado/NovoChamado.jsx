@@ -1,4 +1,3 @@
-import React from 'react';
 import { useEffect, useState } from 'react';
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
@@ -6,13 +5,13 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { FaExclamationCircle } from "react-icons/fa";
 
 import styles from "./NovoChamado.module.css"
-import FormInput from './FormInput';
-import PopUpErro from './PopUpErro';
-import Loading from './Loading';
-import FormChooses from './FormChooses';
-import SelectServico from './SelectServico'; 
-import SelectDefault from './SelectDefault';
-import Horarios from './Horarios';
+import FormInput from '../../compontents/Novo Chamado/FormInput';
+import PopUpErro from '../../compontents/Novo Chamado/PopUpErro';
+import Loading from '../../compontents/Novo Chamado/Loading';
+import FormChooses from '../../compontents/Novo Chamado/FormChooses';
+import SelectServico from '../../compontents/Novo Chamado/SelectServico'; 
+import SelectDefault from '../../compontents/Novo Chamado/SelectDefault';
+import Horarios from '../../compontents/Novo Chamado/Horarios';
 
 const timeValidation = (value) => {
   if (!Array.isArray(value) || value.length < 2) return false;
@@ -221,7 +220,9 @@ const schema = yup.object({
       is: 4,
       then: () => 
         yup.string()
-          .required("Obrigatório informar o nome da agência!")
+          .required("Obrigatório informar o nome da agência!"),
+
+      otherwise: () => yup.mixed().notRequired()
     }),
 
   projetoPesquisa:
@@ -238,7 +239,17 @@ const schema = yup.object({
           ValidationInputsPP
         ),
         otherwise: (schema) => schema.notRequired(),
-    })
+    }),
+
+  responsavelGuarda:
+    yup.mixed().when("origemEquipamento", {
+      is: 3,
+      then: () => 
+        yup.string()
+          .required("Obrigatório informar o nome da agência!"),
+
+    otherwise: () => yup.mixed().notRequired(),
+   }),
 })
 
 

@@ -1,4 +1,4 @@
-import Botao from './Botao'
+import Botao from '../../compontents/Tela Inicial/Botao'
 import { useNavigate } from 'react-router-dom';
 import styles from './TelaInicial.module.css'
 
@@ -7,7 +7,7 @@ const TelaInicial = () => {
   const navigate = useNavigate();
 
   const FuncaoSolicitacoesAnteriores = () =>{
-    navigate('/anteriores');
+    navigate('/solicitacoesAnteriores');
   }
 
   const FuncaoCriarSolicitacao = () => {
