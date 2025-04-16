@@ -246,10 +246,21 @@ const schema = yup.object({
       is: 3,
       then: () => 
         yup.string()
-          .required("Obrigatório informar o nome da agência!"),
+          .required("Obrigatório informar o responsável pela guarda!"),
 
     otherwise: () => yup.mixed().notRequired(),
    }),
+
+  comprovanteEnvio: 
+    yup.mixed()
+    .test("required", "Obrigatório comprovar o envio!", (value) => {
+      return value && value.length > 0;
+    })
+    .test("fileSize", "O arquivo deve ser menor que 5MB!", (value) => {
+      return value && value[0]?.size <= 5 * 1024 * 1024; // 5 MB
+    }),
+
+
 })
 
 
@@ -780,7 +791,15 @@ const NovoChamado = () => {
                         register={register}
                         error={errors.responsavelGuarda}
                       />
-                      Fazer o erro desse input e o alerta sobre equipamentos particulares
+                      
+                      <FormInput
+                        label="Foto/Comprovante de envio"
+                        nome="comprovanteEnvio"
+                        register={register}
+                        type="file"
+                        accept=".pdf, .jpeg, .jpg, .gif, .png, .zip"
+                        error={errors.comprovanteEnvio}
+                      />
                     </div>
 
                     <div className={styles.coluna}>
