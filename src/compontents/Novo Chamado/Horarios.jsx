@@ -1,5 +1,4 @@
-import React from 'react';
-import styles from './Horarios.module.css'
+import styles from '../../styles/Novo Chamado/Horarios.module.css'
 
 const Horarios = ({tipoHorario, register, error}) => {
 

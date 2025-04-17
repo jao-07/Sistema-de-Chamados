@@ -231,12 +231,19 @@ export const schema = yup.object({
   
     //Foto ou Comprovante de envio do formulário de Bens Particulares, caso o equipamento seja Particular
     comprovanteEnvio: 
-      yup.mixed()
-      .test("required", "Obrigatório comprovar o envio!", (value) => {
-        return value && value.length > 0;
+      yup.mixed().when("origemEquipamento", {
+        is: 3,
+        then: () => 
+          yup.mixed()
+            .test("required", "Obrigatório comprovar o envio!", (value) => {
+              return value && value.length > 0;
+            })
+            .test("fileSize", "O arquivo deve ser menor que 5MB!", (value) => {
+              return value && value[0]?.size <= 5 * 1024 * 1024; // 5 MB
+            }),
+
+        otherwise: () => yup.mixed().notRequired()
       })
-      .test("fileSize", "O arquivo deve ser menor que 5MB!", (value) => {
-        return value && value[0]?.size <= 5 * 1024 * 1024; // 5 MB
-      }),
+      
   
 })

@@ -1,5 +1,4 @@
-import React from 'react';
-import styles from './PopUpErro.module.css'
+import styles from '../../styles/Novo Chamado/PopUpErro.module.css'
 
 const PopUpErro = ({error, functionClose}) => {
 
@@ -7,7 +6,7 @@ const PopUpErro = ({error, functionClose}) => {
         <div className={styles.overlay}>
             <div className={styles.popup}>
                 <p>{error}</p>
-                <button onClick={functionClose}>Fechar</button>
+                <button onClick={() => functionClose(null)}>Fechar</button>
             </div>
         </div>
     )

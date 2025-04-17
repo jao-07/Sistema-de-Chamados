@@ -1,6 +1,5 @@
-import React from 'react'
 import { useState, useEffect } from 'react'
-import styles from './SelectServico.module.css'
+import styles from '../../styles/Novo Chamado/SelectServico.module.css'
 
 const SelectServico = ({vetorServicos, vetorCategorias, titulo, register, nome, error, placeholder, selectedValue}) => {
     return (

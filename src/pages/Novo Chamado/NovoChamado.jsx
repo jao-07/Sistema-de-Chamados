@@ -4,7 +4,7 @@ import { yupResolver } from "@hookform/resolvers/yup"
 import { FaExclamationCircle } from "react-icons/fa"
 
 import { schema } from '../../schemas/SchemaForm'
-import { handleChangePatrimonio, handleClickID, handleCloseError } from '../../utils/HandleFunctions'
+import { handleChangePatrimonio } from '../../utils/HandleFunctions'
 import * as options from '../../utils/options.js'
 
 import styles from "./NovoChamado.module.css"
@@ -16,12 +16,14 @@ import SelectServico from '../../compontents/Novo Chamado/SelectServico'
 import SelectDefault from '../../compontents/Novo Chamado/SelectDefault'
 import Horarios from '../../compontents/Novo Chamado/Horarios'
 
+import BuscarChamadoAnterior from './secoes/BuscarChamadoAnterior.jsx'
+import InformacoesDoUsuario from './secoes/InformacoesDoUsuario.jsx'
+import InformacoesDoServico from './secoes/InformacoesDoServico.jsx'
+
 const NovoChamado = () => {
 
   //useStates utilizados
   const [loading, SetLoading] = useState(false)
-  const [idChamado, SetIdChamado] = useState(0)
-  const [valorInputID, SetValorInputID] = useState(0)
   const [erroDados, SetErroDados] = useState(false)
 
   //Usa o hook useForm para o controle e validação dos inputs do formulário
@@ -32,37 +34,13 @@ const NovoChamado = () => {
     },
   })
 
-  const dadosDoBanco = {
-    solicitante: "João",
-    emailInstitucional: "email@aleatorio.br"
-  }
-
-  const esperar = (ms) => new Promise(resolve => setTimeout(resolve, ms));
-
-  //Utiliza useEffect para buscar as informações do chamado de que se quer aproveitar
-  useEffect(() => {
-    SetLoading(true)
-    const getDados = async (ID) => {
-      try {
-        await esperar(2000)
-        const response = await Promise.resolve(dadosDoBanco)
-        reset(response)
-        SetErroDados(null)
-        SetLoading(false)
-      }
-      catch (error) {
-        SetLoading(false)
-        SetErroDados("Erro! Não foi possível carregar os dados")
-      }
-    }
-    getDados(idChamado)
-    SetIdChamado()
-  }, [idChamado])
 
   //Função que envia os dados do formulário para o backend ao clicar no botão de submit
   const onSubmit = (data) => {
     console.log("Dados enviados:", data)
   }
+
+  //console.log(errors)
 
   return (
     <div className={styles.container}>
@@ -72,25 +50,16 @@ const NovoChamado = () => {
       )}
 
       {erroDados && (
-        <PopUpErro error={erroDados} functionClose={handleCloseError} />
+        <PopUpErro error={erroDados} functionClose={SetErroDados} />
       )}
 
       <div className={styles.form}>
 
-        <div className={styles.secao}>
-          <p>Para aproveitar os dados de um chamado anterior, digite o número do chamado e clique no botão</p>
-          <div className={styles.aproveitamento}>
-            <input
-              type="number"
-              placeholder="Digite o número do chamado"
-              style={{ width: "70%" }}
-              onChange={(event) => SetValorInputID(event.target.value)}
-            />
-            <button onClick={() => handleClickID(valorInputID)}>
-              Buscar
-            </button>
-          </div>
-        </div>
+      <BuscarChamadoAnterior 
+        SetLoading={SetLoading}
+        reset={reset}
+        SetErroDados={SetErroDados}
+      />
 
         <div className={styles.secao}>
           <div className={styles.conteudo}>
@@ -106,59 +75,18 @@ const NovoChamado = () => {
 
         <form onSubmit={handleSubmit(onSubmit)}>
 
-          <div className={styles.secao}>
-            <h2>Informações do usuário</h2>
-            <div className={styles.inputsSecao}>
+          <InformacoesDoUsuario 
+            register={register}
+            errors={errors}
+          />
 
-              <div className={styles.coluna}>
-                <FormInput
-                  label="Solicitante"
-                  nome="solicitante"
-                  placeholder="Digite seu nome"
-                  register={register}
-                  error={errors.solicitante}
-                />
-
-              </div>
-
-              <div className={styles.coluna}>
-                <FormInput
-                  label="Email Institucional"
-                  nome="emailInstitucional"
-                  placeholder="Digite seu email"
-                  register={register}
-                  error={errors.emailInstitucional}
-                />
-              </div>
-
-            </div>
-          </div>
-
-          <div className={styles.secao}>
-            <h2>Informações do serviço</h2>
-            <p>Escolha a área do serviço desejado</p>
-            <FormChooses
-              vetor={options.vetorArea}
-              size={80}
-              setValue={setValue}
-              clearErrors={clearErrors}
-              nome="areaServico"
-              error={errors.areaServico}
-              selectedValue={watch().areaServico}
-            />
-            {watch().areaServico &&
-              <SelectServico
-                vetorServicos={options.servicos}
-                vetorCategorias={options.categoria_servicos}
-                titulo="Escolha o serviço"
-                nome="servico"
-                placeholder="Escolha o serviço requerido"
-                register={register}
-                error={errors.servico}
-                selectedValue={watch().servico}
-              />
-            }
-          </div>
+          <InformacoesDoServico 
+            watch={watch}
+            errors={errors}
+            register={register}
+            setValue={setValue}
+            clearErrors={clearErrors}
+          /> 
 
           <div className={styles.secao}>
             <h2>Descrição do problema</h2>
@@ -327,8 +255,8 @@ const NovoChamado = () => {
                     </div>
                     <div>
                       <h2>Atenção!</h2>
-                      <p>Confira se seus dados na Intranet estão atualizados!</p>
-                      <p>Para atualizá-los, acesse <a href="https://sistemas.icb.ufmg.br/intranet/">Intranet</a></p>
+                      <p>A Seção de Informática só atende chamados de rede em equipamentos particulares relacionados no <a href="https://sistemas2.icb.ufmg.br/chamado/formularioBemParticular.doc">Relatório de Bens Particulares</a> formalizados no instituto.</p>
+                      <p>Preencha o referido formulário e envie-o no formato PDF para o e-mail da Seção de Patrimônio: spatri@icb.ufmg.br. O chamado poderá ser aberto anexando uma foto/comprovante de envio </p>
                     </div>
                   </div>
                 }
@@ -341,7 +269,7 @@ const NovoChamado = () => {
                         nome="numeroPatrimonioEquipamentoPatrimoniado"
                         placeholder="Digite o número de patrimônio"
                         register={register}
-                        onChange={handleChangePatrimonio}
+                        onChange={(e, n) => handleChangePatrimonio(e, n, setValue)}
                         maxLength={11}
                         error={errors.numeroPatrimonioEquipamentoPatrimoniado}
                       />

@@ -1,5 +1,4 @@
-import React from 'react';
-import styles from './FormChooses.module.css'
+import styles from '../../styles/Novo Chamado/FormChooses.module.css'
 import DynamicIcon from '../Helpers/DynamicIcon';
 
 const FormChooses = ({vetor, size, nome, error, setValue, clearErrors, selectedValue}) => {

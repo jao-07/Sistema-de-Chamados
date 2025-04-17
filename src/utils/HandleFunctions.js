@@ -1,18 +1,14 @@
-export const handleClickID = (valorInput) => {
+export const handleClickID = (valorInput, SetIdChamado, SetErroDados) => {
     if (valorInput && valorInput > 0) {
-      SetIdChamado(valorInputID)
-      SetErroDados()
+      SetIdChamado(valorInput)
+      SetErroDados(null)
     }
     else {
       SetErroDados("Erro! ID de chamado inválido")
     }
   }
 
-export const handleCloseError = () => {
-    SetErroDados()
-  }
-
-export const handleChangePatrimonio = (event, nome) => {
+export const handleChangePatrimonio = (event, nome, setValue) => {
     // Obtém o valor digitado
     let value = event.target.value;
 

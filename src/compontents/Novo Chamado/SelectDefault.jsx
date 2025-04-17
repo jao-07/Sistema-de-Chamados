@@ -1,5 +1,4 @@
-import React from 'react';
-import styles from './SelectDefault.module.css'
+import styles from '../../styles/Novo Chamado/SelectDefault.module.css'
 
 const SelectDefault = ({vetor, titulo, register, nome, error, placeholder, selectedValue}) => {
   return (

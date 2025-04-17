@@ -1,5 +1,4 @@
-import React from 'react';
-import styles from './FormInput.module.css'
+import styles from '../../styles/Novo Chamado/FormInput.module.css'
 
 const FormInput = ({label, nome, type='text', register, error=null, onChange, ...rest}) => {
 

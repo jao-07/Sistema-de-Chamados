@@ -1,5 +1,4 @@
-import React from 'react';
-import styles from './Botao.module.css'
+import styles from '../../styles/Tela Inicial/Botao.module.css'
 
 const Botao = ({texto, funcao}) => {
 
