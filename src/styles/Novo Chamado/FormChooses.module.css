@@ -5,8 +5,11 @@
 
 .chooses{
     display: flex;
+    flex-wrap: wrap;
     justify-content: space-around;
     text-align: center;
+    padding: 5px;
+    gap: 5px;
 }
 
 .chooses p{
