@@ -1,10 +1,10 @@
 //Vetor de objetos utilizado para a parte da escolha da área do serviço
 export const vetorArea =
 [
-  { id: 1, icone: "FaComputer", titulo: "Informática" },
-  { id: 2, icone: "FaMicrophoneLines", titulo: "Assessoria de Comunicação" },
-  { id: 3, icone: "FaGears", titulo: "Serviços de Infraestrutura" },
-  { id: 4, icone: "FaScrewdriverWrench", titulo: "Manutenção Predial ou de Equipamentos" }
+  {icone: "FaComputer", titulo: "Informática" },
+  {icone: "FaMicrophoneLines", titulo: "Assessoria de Comunicação" },
+  {icone: "FaGears", titulo: "Serviços de Infraestrutura" },
+  {icone: "FaScrewdriverWrench", titulo: "Manutenção Predial ou de Equipamentos" }
 ]
 
 //Vetor de objetos utilizado para a parte da escolha do serviço
@@ -32,47 +32,30 @@ export const categoria_servicos = [
 
 export const vetorInfos =
 [
-  { id: 1, icone: "FaI", titulo: "Informações cadastradas no Intranet" },
-  { id: 2, icone: "FaClock", titulo: "Outras informações" }
+  {icone: "FaI", titulo: "Informações cadastradas no Intranet" },
+  {icone: "FaClock", titulo: "Outras informações" }
 ]
 
 export const vetorHorarios =
 [
-  { id: 1, icone: "FaArrowRightLong", titulo: "Horário corrido" },
-  { id: 2, icone: "FaPause", titulo: "Horário partido" },
-  { id: 3, icone: "FaAsterisk", titulo: "Horário variado" }
+  {icone: "FaArrowRightLong", titulo: "Horário corrido" },
+  {icone: "FaPause", titulo: "Horário partido" },
+  {icone: "FaAsterisk", titulo: "Horário variado" }
 ]
 
 export const vetorSimOuNao = [
-{id: 1, icone: "FaCircleCheck", titulo: "Sim"},
-{id: 2, icone: "FaCircleXmark", titulo: "Não"}
+{icone: "FaCircleCheck", titulo: "Sim"},
+{icone: "FaCircleXmark", titulo: "Não"}
 ]
 
 export const vetorOrigemEquipamento = [
-{id: 1, icone: "FaBuildingColumns", titulo: "Patrimoniado"},
-{id: 2, icone: "FaVial", titulo: "Projeto de pesquisa"},
-{id: 3, icone: "FaBriefcase", titulo: "Particular"}
+{icone: "FaBuildingColumns", titulo: "Patrimoniado"},
+{icone: "FaVial", titulo: "Projeto de pesquisa"},
+{icone: "FaBriefcase", titulo: "Particular"}
 ]
 
-export const departamentos =
-[
-  { id: 1, nome: "Administração" },
-  { id: 2, nome: "Genética, Ecologia e Evolução" },
-  { id: 3, nome: "Bioquímica e Imunologia" },
-  { id: 4, nome: "Botânica" }
-]
+export const departamentos = ["Administração","Genética, Ecologia e Evolução","Bioquímica e Imunologia","Botânica"]
 
-export const blocos_salas =
-[
-  { id: 574, nome: "- Não se aplica -" },
-  { id: 490, nome: "A1" },
-  { id: 78, nome: "B2 - 162 - SALA DE SEMINÁRIOS" },
-  { id: 20, nome: "C1 - 120 - SEÇÃO DE COMPRAS" }
-]
+export const blocos_salas = ["- Não se aplica -","A1", "B2 - 162 - SALA DE SEMINÁRIOS", "C1 - 120 - SEÇÃO DE COMPRAS"]
 
-export const agenciasProjetoPesquisa = [
-{id: 1, nome: "FAPEMIG"},
-{id: 2, nome: "FUNDEP"},
-{id: 3, nome: "CNPQ"},
-{id: 4, nome: "Outro"},
-]
+export const agenciasProjetoPesquisa = [ "FAPEMIG", "FUNDEP", "CNPQ", "Outro"]

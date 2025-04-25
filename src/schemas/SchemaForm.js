@@ -16,12 +16,12 @@ export const schema = yup.object({
   
     //Número da área de serviço escolhida (Informática, comunicação ...)
     areaServico: 
-      yup.number()
+      yup.string()
         .required("Origatório escolher a área do serviço!"),
   
     //ID do serviço escolhido
     servico:
-      yup.number()
+      yup.string()
         .required("Obrigatório selecionar o serviço!")
         .transform((value, originalValue) => originalValue === "" ? undefined : value),
   
@@ -38,14 +38,13 @@ export const schema = yup.object({
   
     //Opção escolhida para quais informações de contato utilizar, 1 para intranet, 2 para outras
     infoContato: 
-      yup.number()
+      yup.string()
       .required("Origatório escolher uma opção para contato!"),
   
     //ID do departamento escolhido
     departamento: 
-      yup.number()
-      .required("Obrigatório informar o departamento!")
-      .transform((value, originalValue) => originalValue === "" ? undefined : value),
+      yup.string()
+      .required("Obrigatório informar o departamento!"),
   
     //ID oo bloco/sala escolhido
     bloco_sala: 
@@ -65,9 +64,9 @@ export const schema = yup.object({
       yup.string()
       .required("Obrigatório informar contatos adicionais para o atendimento!"),
     
-    //Opção escolhida para o tipo de horário, 1 para horário corrido, 2 para horário partido e 3 para horário variado
+    //Opção escolhida para o tipo de horário, Horário corrido, Horário partido ou Horário variado
     tipoHorario: 
-      yup.number()
+      yup.string()
       .required("Origatório escolher o horário a ser contactado!"),
   
     //Horários definidos nos campos de horário corrido
@@ -142,23 +141,21 @@ export const schema = yup.object({
     //Se o chamado está relacionado a algum equipamento ou não
     //1 = sim, 2 = não
     relacionadoEquipamento:
-      yup.number()
-        .required("Obrigatório informar se o chamado envolve algum equipamento!")
-        .transform((value, originalValue) => originalValue === "" ? undefined : value),
+      yup.string()
+        .required("Obrigatório informar se o chamado envolve algum equipamento!"),
   
     //Se o chamado é para o computador do usuário ou não
     //1 = sim, 2 = não
     seuComputador:
-      yup.number()
-        .required("Obrigatório informar se é para seu computador ou não!")
-        .transform((value, originalValue) => originalValue === "" ? undefined : value),
+      yup.string()
+        .required("Obrigatório informar se é para seu computador ou não!"),
+        //.transform((value, originalValue) => originalValue === "" ? undefined : value),
   
     //Origem do equipamento
     //1 = Patrimoniado, 2 = Projeto de pesquisa, 3 = Particular
     origemEquipamento:
-      yup.number()
-        .required("Obrigatório informar a origem do equipamento!")
-        .transform((value, originalValue) => originalValue === "" ? undefined : value),
+      yup.string()
+        .required("Obrigatório informar a origem do equipamento!"),
   
     //Número de patrimônio
     //Obrigatório caso a origem do equipamento seja Patrimoniado
@@ -180,9 +177,8 @@ export const schema = yup.object({
       yup.mixed().when("origemEquipamento", {
         is: 2,
         then: () =>
-          yup.number()
-            .required("Obrigatório informar a agência!")
-            .transform((value, originalValue) => originalValue === "" ? undefined : value),
+          yup.string()
+            .required("Obrigatório informar a agência!"),
   
         otherwise: () => yup.mixed().notRequired()
       }),
@@ -245,5 +241,4 @@ export const schema = yup.object({
         otherwise: () => yup.mixed().notRequired()
       })
       
-  
 })

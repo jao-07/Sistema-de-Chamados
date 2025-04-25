@@ -12,9 +12,9 @@ const FormChooses = ({vetor, size, nome, error, setValue, clearErrors, selectedV
         <div className={styles.container}>
             <div className={styles.chooses}>
                 {
-                    vetor.map((item) => {
+                    vetor.map((item, index) => {
                         return(
-                            <div key={item.id} className={selectedValue == item.id ? styles.iconSelected : styles.iconUnselected} onClick={() => handleClickFormChooses(nome, item.id)}>
+                            <div key={index} className={selectedValue == item.titulo ? styles.iconSelected : styles.iconUnselected} onClick={() => handleClickFormChooses(nome, item.titulo)}>
                                 <DynamicIcon name={item.icone} size={size} />
                                 <p>{item.titulo}</p>
                             </div>

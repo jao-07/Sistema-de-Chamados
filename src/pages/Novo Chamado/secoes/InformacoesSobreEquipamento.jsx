@@ -23,7 +23,7 @@ const InformacoesSobreEquipamento = ({watch, errors, register, setValue, clearEr
             selectedValue={watch().relacionadoEquipamento}
         />
 
-        { watch().relacionadoEquipamento == 1 &&
+        { watch().relacionadoEquipamento == "Sim" &&
             <>
                 <div className={styles.inputsSecao}>
                     <div className={styles.coluna}>
@@ -53,7 +53,7 @@ const InformacoesSobreEquipamento = ({watch, errors, register, setValue, clearEr
                 </div>
 
                 {/* Aviso sobre equipamentos particulares */}
-                {watch().origemEquipamento == 3 &&
+                {watch().origemEquipamento == "Particular" &&
                     <div className={styles.conteudo} style={{ border: '1px solid black', borderRadius: '10px', paddingLeft: '60px', marginBottom: '40px' }}>
                         <div className={styles.iconExclamacao}>
                             <FaExclamationCircle />
@@ -66,7 +66,7 @@ const InformacoesSobreEquipamento = ({watch, errors, register, setValue, clearEr
                     </div>
                 }
                 {/* Inputs caso o equipamento seja Patrimoniado */}
-                { watch().origemEquipamento == 1 &&
+                { watch().origemEquipamento == "Patrimoniado" &&
                     <div className={styles.inputsSecao}>
                         <div className={styles.coluna}>
                             <FormInput
@@ -92,7 +92,7 @@ const InformacoesSobreEquipamento = ({watch, errors, register, setValue, clearEr
                 }
 
                 {/* Inputs caso o equipamento seja de Projeto de Pesquisa */}
-                { watch().origemEquipamento == 2 &&
+                { watch().origemEquipamento == "Projeto de pesquisa" &&
                     <div className={styles.inputsSecao}>
                         <div className={styles.coluna}>
                             <SelectDefault
@@ -122,7 +122,7 @@ const InformacoesSobreEquipamento = ({watch, errors, register, setValue, clearEr
                         </div>
 
                         <div className={styles.coluna}>
-                            { watch().agencia == 4 &&
+                            { watch().agencia == "Outro" &&
                             <FormInput
                                 label="Informe o nome da agência"
                                 nome="agenciaOutro"
@@ -154,7 +154,7 @@ const InformacoesSobreEquipamento = ({watch, errors, register, setValue, clearEr
                 }
 
                 {/* Inputs caso o equipamento seja Particular */}
-                { watch().origemEquipamento == 3 &&
+                { watch().origemEquipamento == "Particular" &&
                     <div className={styles.inputsSecao}>
                         <div className={styles.coluna}>
                             <FormInput

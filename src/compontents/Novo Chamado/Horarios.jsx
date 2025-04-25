@@ -10,7 +10,7 @@ const Horarios = ({tipoHorario, register, error}) => {
     return (
         <div className={styles.container}>
             {
-                tipoHorario == 1 && //Horário corrido
+                tipoHorario == "Horário corrido" && //Horário corrido
                 <div className={styles.horarios}>
                     <p>*Obs: Quando há um único turno de trabalho contínuo, sem pausas, todos os dias</p>
                     <div className={styles.linha}>
@@ -22,7 +22,7 @@ const Horarios = ({tipoHorario, register, error}) => {
             }
 
             {
-                tipoHorario == 2 && //Horário partido
+                tipoHorario == "Horário partido" && //Horário partido
                 <div className={styles.horarios}>
                     <p>*Obs: Quando há dois turnos de trabalho com pausa entre esses turnos</p>
                     <div className={styles.linha}>
@@ -38,7 +38,7 @@ const Horarios = ({tipoHorario, register, error}) => {
             }
 
             {
-                tipoHorario == 3 && //Horário partido
+                tipoHorario == "Horário variado" && //Horário partido
                 <div className={styles.horarios}>
                     <p>*Obs: Quando há turnos diferentes para cada dia da semana</p>
                     <div className={styles.linha}>

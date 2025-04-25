@@ -20,7 +20,7 @@ const InformacoesDeContato = ({watch, errors, register, setValue, clearErrors}) 
             error={errors.infoContato}
             selectedValue={watch().infoContato}
         />
-        {watch().infoContato == 1 &&
+        {watch().infoContato == "Informações cadastradas no Intranet" &&
             <div className={styles.conteudo} style={{ border: '1px solid black', borderRadius: '10px', paddingLeft: '60px', marginBottom: '40px' }}>
             <div className={styles.iconExclamacao}>
                 <FaExclamationCircle />
