@@ -4,6 +4,6 @@
     margin: 0;
     padding: 0;
     min-height: 100vh;
-    width: clamp(1200px, 100vw, 100vw);
+    width: clamp(1000px, 99vw, 100vw);
     background-color:rgb(245, 245, 245);
   }

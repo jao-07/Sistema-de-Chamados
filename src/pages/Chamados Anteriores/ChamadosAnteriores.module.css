@@ -1,0 +1,55 @@
+.container{
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.title{
+    font-size: 20px;
+    font-weight: bold;
+    width: 80%;
+}
+
+.list{
+    display: flex;
+    flex-direction: column;
+    list-style-type: none;
+    padding: 0;
+    align-items: center;
+    width: 100%;
+}
+
+.data{
+    color: #666
+}
+
+.solicitacao{
+    display: flex;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: 0 10px;
+    margin-bottom: 10px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    width: 80%;
+}
+
+.contents{
+    display: grid;
+    grid-template-columns: 25% 25% 25% 25%;
+    width: 70%;
+    gap: 3px;
+}
+
+.botao{
+    width: 30%;
+    display: flex;
+    align-items: center;
+    justify-content: end;
+}
+
+.botao button{
+    width: 50%;
+    background-color: green;
+    color: white;
+}
