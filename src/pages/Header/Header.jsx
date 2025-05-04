@@ -1,11 +1,12 @@
 import React from 'react';
 import styles from "./Header.module.css"
 import Botao from './Botao';
-import { useNavigate } from "react-router";
+import { useNavigate, useLocation } from "react-router";
 
 const Header = () => {
 
   let navigate = useNavigate();
+  const location = useLocation();
 
   const handleClickHome = () => {
     navigate("/")
@@ -13,6 +14,11 @@ const Header = () => {
 
   const handleClickLogout = () => {
     //window.location.href = "https://www.google.com";
+  }
+
+  const handleClickReturn = () => {
+    if(location.pathname != "/")
+      navigate(-1)
   }
 
   return (
@@ -34,6 +40,15 @@ const Header = () => {
         handle={handleClickLogout}
         posTop="100px"
         posLeft="90px"
+        title="Logout"
+      />
+
+      <Botao 
+        icone="FaArrowRotateLeft"
+        size="20"
+        handle={handleClickReturn}
+        posTop="100px"
+        posLeft="140px"
         title="Logout"
       />
     </div>

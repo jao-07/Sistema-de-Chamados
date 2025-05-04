@@ -53,3 +53,11 @@
     background-color: green;
     color: white;
 }
+
+.botao button:hover{
+    transform: scale(1.05);
+}
+
+.botao button:active{
+    transform: scale(0.95);
+}

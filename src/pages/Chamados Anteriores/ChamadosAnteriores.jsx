@@ -10,7 +10,7 @@ export default function ChamadosAnteriores({ userId }) {
   let navigate = useNavigate();
 
   useEffect(() => {
-    async function carregarSolicitacoes() {
+     const carregarSolicitacoes =  async () => {
       try {
         //const resposta = await fetch(`/api/solicitacoes?usuario=${userId}`);
         const resposta = [
@@ -27,7 +27,7 @@ export default function ChamadosAnteriores({ userId }) {
         setLoading(false);
       }
     }
-
+    setLoading(true);
     carregarSolicitacoes();
   }, [userId]);
 
