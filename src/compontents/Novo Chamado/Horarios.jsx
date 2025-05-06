@@ -8,9 +8,9 @@ const Horarios = ({tipoHorario, register, error}) => {
     const erroHorarioVariado = error[2]?.find(e => e?.message)?.message;
   
     return (
-        <div className={styles.container}>
+        <div className={styles.container} name={tipoHorario == "Horário corrido" ? "horarioCorrido" : tipoHorario == "Horário partido" ? "horarioPartido" : "horarioVariado"}>
             {
-                tipoHorario == "Horário corrido" && //Horário corrido
+                tipoHorario == "Horário corrido" &&
                 <div className={styles.horarios}>
                     <p>*Obs: Quando há um único turno de trabalho contínuo, sem pausas, todos os dias</p>
                     <div className={styles.linha}>
@@ -22,7 +22,7 @@ const Horarios = ({tipoHorario, register, error}) => {
             }
 
             {
-                tipoHorario == "Horário partido" && //Horário partido
+                tipoHorario == "Horário partido" &&
                 <div className={styles.horarios}>
                     <p>*Obs: Quando há dois turnos de trabalho com pausa entre esses turnos</p>
                     <div className={styles.linha}>
@@ -38,7 +38,7 @@ const Horarios = ({tipoHorario, register, error}) => {
             }
 
             {
-                tipoHorario == "Horário variado" && //Horário partido
+                tipoHorario == "Horário variado" &&
                 <div className={styles.horarios}>
                     <p>*Obs: Quando há turnos diferentes para cada dia da semana</p>
                     <div className={styles.linha}>
@@ -83,12 +83,11 @@ const Horarios = ({tipoHorario, register, error}) => {
                         <input type="time" {...register("horarioVariado.9.0")} className={error[2]?.[9] ? styles.erroInput : ""}/>
                         <input type="time" {...register("horarioVariado.9.1")} className={error[2]?.[9] ? styles.erroInput : ""}/>
                     </div>
-                    {error[2] && <p></p>}
                 </div>      
             }
-            {tipoHorario == 1 && erroHorarioCorrido && <p className={styles.erro}>{erroHorarioCorrido}</p>}
-            {tipoHorario == 2 && erroHorarioPartido && <p className={styles.erro}>{erroHorarioPartido}</p>}
-            {tipoHorario == 3 && erroHorarioVariado && <p className={styles.erro}>{erroHorarioVariado}</p>}
+            {tipoHorario == "Horário corrido" && erroHorarioCorrido && <p className={styles.erro}>{erroHorarioCorrido}</p>}
+            {tipoHorario == "Horário partido" && erroHorarioPartido && <p className={styles.erro}>{erroHorarioPartido}</p>}
+            {tipoHorario == "Horário variado" && erroHorarioVariado && <p className={styles.erro}>{erroHorarioVariado}</p>}
         </div>
     )
 }

@@ -72,16 +72,14 @@ export const schema = yup.object({
     //Horários definidos nos campos de horário corrido
     //É definido como um array de horarios (string)
     horarioCorrido: yup.mixed().when("tipoHorario", {
-      is: 1,
+      is: "Horário corrido",
       then: () =>
         yup
           .array()
           .of(
             yup
               .string()
-              .transform((value, originalValue) =>
-                originalValue === "" ? undefined : value
-              )
+              .transform((value, originalValue) => originalValue === "" ? undefined : value)
               .matches(/^([0-9]{2}):([0-9]{2})$/, "Formato inválido!")
           )
           .length(2, "Informe os dois horários")
@@ -93,7 +91,7 @@ export const schema = yup.object({
     //Horários definidos nos campos de horário partido
     //É definido como uma matriz, de dois arrays com dois horários (string) cada
     horarioPartido: yup.mixed().when("tipoHorario", {
-      is: 2,
+      is: "Horário partido",
       then: () =>
         yup
           .array()
@@ -117,7 +115,7 @@ export const schema = yup.object({
     //Horários definidos nos campos de horário variado
     //É definido como uma matriz com 10 vetores, com dois horários (string) cada
     horarioVariado: yup.mixed().when("tipoHorario", {
-      is: 3,
+      is: "Horário variado",
       then: () =>
         yup
           .array()
@@ -132,6 +130,7 @@ export const schema = yup.object({
               )
               .length(2)
               .test("valid-range", "Horários passados inválidos!", timeValidation)
+              .required("Informe os horários do turno variado")
           )
           .length(10)
           .required("Informe os horários do turno variado"),
@@ -139,7 +138,6 @@ export const schema = yup.object({
     }),
   
     //Se o chamado está relacionado a algum equipamento ou não
-    //1 = sim, 2 = não
     relacionadoEquipamento:
       yup.string()
         .required("Obrigatório informar se o chamado envolve algum equipamento!"),
@@ -152,7 +150,6 @@ export const schema = yup.object({
         //.transform((value, originalValue) => originalValue === "" ? undefined : value),
   
     //Origem do equipamento
-    //1 = Patrimoniado, 2 = Projeto de pesquisa, 3 = Particular
     origemEquipamento:
       yup.string()
         .required("Obrigatório informar a origem do equipamento!"),
@@ -162,7 +159,7 @@ export const schema = yup.object({
     //Caso não seja, não é obrigatório
     numeroPatrimonioEquipamentoPatrimoniado:
       yup.mixed().when("origemEquipamento", {
-        is: 1,
+        is: "Patrimoniado",
         then: () =>
           yup.string()
             .required("Obrigatório informar o número de patrimônio!"),
@@ -170,12 +167,12 @@ export const schema = yup.object({
         otherwise: () => yup.mixed().notRequired()
       }),
   
-    //Número de patrimônio
-    //Obrigatório caso a origem do equipamento seja Patrimoniado
+    //Agência
+    //Obrigatório caso a origem do equipamento seja Projeto de Pesquisa
     //Caso não seja, não é obrigatório
     agencia:
       yup.mixed().when("origemEquipamento", {
-        is: 2,
+        is: "Projeto de pesquisa",
         then: () =>
           yup.string()
             .required("Obrigatório informar a agência!"),
@@ -186,7 +183,7 @@ export const schema = yup.object({
     //Nome da agência caso o usuário tenha selecionado a opção "Outro" no select de agências de Projeto de Pesquisa
     agenciaOutro:
       yup.mixed().when("agencia", {
-        is: 4,
+        is: "Outro",
         then: () => 
           yup.string()
             .required("Obrigatório informar o nome da agência!"),
@@ -204,7 +201,7 @@ export const schema = yup.object({
         numeroProjeto: yup.string("Número de projeto inválido!").transform((value, originalValue) => originalValue === "" ? undefined : value),
         numeroPatrimonioPP: yup.string("Número de patrimônio inválido!").transform((value, originalValue) => originalValue === "" ? undefined : value)
       }).when("origemEquipamento", {
-        is: 2,
+        is: "Projeto de pesquisa",
         then: (schema) => 
           schema.test(
             'pelo-menos-um', 
@@ -217,7 +214,7 @@ export const schema = yup.object({
     //Nome do responsável pela guarda do equipamento, se o equipamento for Particular
     responsavelGuarda:
       yup.mixed().when("origemEquipamento", {
-        is: 3,
+        is: "Particular",
         then: () => 
           yup.string()
             .required("Obrigatório informar o responsável pela guarda!"),
@@ -228,7 +225,7 @@ export const schema = yup.object({
     //Foto ou Comprovante de envio do formulário de Bens Particulares, caso o equipamento seja Particular
     comprovanteEnvio: 
       yup.mixed().when("origemEquipamento", {
-        is: 3,
+        is: "Particular",
         then: () => 
           yup.mixed()
             .test("required", "Obrigatório comprovar o envio!", (value) => {

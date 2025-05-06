@@ -13,7 +13,7 @@ const SelectServico = ({vetorServicos, vetorCategorias, titulo, register, nome, 
                             {
                                 vetorServicos.map((itemServico) => (
                                     itemCategoria.id_categoria == itemServico.id_categoria  && 
-                                    <option key={itemServico.id} value={itemServico.id}>{itemServico.nome}</option> 
+                                    <option key={itemServico.id} value={itemServico.nome}>{itemServico.nome}</option> 
                                 ))
                             }       
                         </optgroup>
@@ -24,7 +24,7 @@ const SelectServico = ({vetorServicos, vetorCategorias, titulo, register, nome, 
             {selectedValue && 
                 <div className={styles.observacoes}>
                     <label>Observações:</label>
-                    <p>{vetorServicos.find(item => item.id == selectedValue).descricao}</p>
+                    <p>{vetorServicos.find(item => item.nome == selectedValue)?.descricao}</p>
 
                 </div>
             }

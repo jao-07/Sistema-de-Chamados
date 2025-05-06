@@ -9,7 +9,7 @@ const FormChooses = ({vetor, size, nome, error, setValue, clearErrors, selectedV
     }
 
     return (
-        <div className={styles.container}>
+        <div className={styles.container} name={nome}>
             <div className={styles.chooses}>
                 {
                     vetor.map((item, index) => {

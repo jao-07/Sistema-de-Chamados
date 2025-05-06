@@ -24,7 +24,7 @@ const NovoChamado = () => {
 
   //Usa o hook useForm para o controle e validação dos inputs do formulário
   const { register, handleSubmit, watch, setValue, clearErrors, reset, formState: { errors } } = useForm({
-    resolver: yupResolver(schema),
+    resolver: yupResolver(schema), shouldFocusError: false,
     defaultValues: {
       urgencia: 1,
     },
@@ -34,6 +34,16 @@ const NovoChamado = () => {
   //Função que envia os dados do formulário para o backend ao clicar no botão de submit
   const onSubmit = (data) => {
     console.log("Dados enviados:", data)
+  }
+
+  //Função que busca se tem algum erro e, caso tenha, coloca a tela no elemento que causa o erro
+  const onError = (errors) => {
+    const firstErrorKey = Object.keys(errors)[0];
+    console.log("erro: ", firstErrorKey)
+    const errorElement = document.querySelector(`[name="${firstErrorKey}"]`)
+    if (errorElement) {
+      errorElement.scrollIntoView({ behavior: 'smooth', block: 'center' })
+    }
   }
 
   //console.log(errors)
@@ -69,7 +79,7 @@ const NovoChamado = () => {
           </div>
         </div>
 
-        <form onSubmit={handleSubmit(onSubmit)}>
+        <form onSubmit={handleSubmit(onSubmit, onError)}>
 
           <InformacoesDoUsuario 
             register={register}

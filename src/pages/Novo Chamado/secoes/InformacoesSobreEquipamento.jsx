@@ -93,7 +93,7 @@ const InformacoesSobreEquipamento = ({watch, errors, register, setValue, clearEr
 
                 {/* Inputs caso o equipamento seja de Projeto de Pesquisa */}
                 { watch().origemEquipamento == "Projeto de pesquisa" &&
-                    <div className={styles.inputsSecao}>
+                    <div className={styles.inputsSecao} name="projetoPesquisa">
                         <div className={styles.coluna}>
                             <SelectDefault
                                 vetor={options.agenciasProjetoPesquisa}
@@ -188,7 +188,7 @@ const InformacoesSobreEquipamento = ({watch, errors, register, setValue, clearEr
             
             </>
         }
-        {errors?.projetoPesquisa?.message && watch().relacionadoEquipamento == 1 && watch().origemEquipamento == 2 && <p style={{color: "red"}}>{errors.projetoPesquisa.message}</p>}
+        {errors?.projetoPesquisa?.message && watch().relacionadoEquipamento == "Sim" && watch().origemEquipamento == "Projeto de pesquisa" && <p style={{color: "red"}}>{errors.projetoPesquisa.message}</p>}
     </div>
   )
 }
