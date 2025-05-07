@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { useForm } from "react-hook-form"
 import { yupResolver } from "@hookform/resolvers/yup"
 import { FaExclamationCircle } from "react-icons/fa"
+import axios from 'axios'
 
 import { schema } from '../../schemas/SchemaForm'
 
@@ -15,12 +16,16 @@ import InformacoesDoServico from './secoes/InformacoesDoServico.jsx'
 import DescricaoDoProblema from './secoes/DescricaoDoProblema.jsx'
 import InformacoesDeContato from './secoes/InformacoesDeContato.jsx'
 import InformacoesSobreEquipamento from './secoes/InformacoesSobreEquipamento.jsx'
+import { array } from 'yup'
 
 const NovoChamado = () => {
 
   //useStates utilizados
   const [loading, SetLoading] = useState(false)
   const [erroDados, SetErroDados] = useState(false)
+  const [setores, SetSetores] = useState([])
+  const [categorias, SetCategorias] = useState([])
+  const [servicos, SetServicos] = useState([])
 
   //Usa o hook useForm para o controle e validação dos inputs do formulário
   const { register, handleSubmit, watch, setValue, clearErrors, reset, formState: { errors } } = useForm({
@@ -47,6 +52,29 @@ const NovoChamado = () => {
   }
 
   //console.log(errors)
+
+  useEffect(() => {
+    const getDados = async () => {
+      try{
+        SetLoading(true)
+        var response = await axios.get('https://sistemas.icb.ufmg.br/wifi/api/servico/setores')
+        SetSetores(response.data)
+        response = await axios.get('https://sistemas.icb.ufmg.br/wifi/api/servico/categorias')
+        SetCategorias(response.data)
+        response = await axios.get('https://sistemas.icb.ufmg.br/wifi/api/servico/nomes')
+        SetServicos(response.data)
+      }
+      catch (erro){
+        console.log("Erro! Não foi possível carregar os dados: " + erro.message)
+      }
+      finally{
+        SetLoading(false)
+      }
+    }
+    getDados()
+  },[])
+
+ 
 
   return (
     <div className={styles.container}>
@@ -92,6 +120,9 @@ const NovoChamado = () => {
             register={register}
             setValue={setValue}
             clearErrors={clearErrors}
+            setores={setores}
+            categorias={categorias}
+            servicos={servicos}
           /> 
 
           <DescricaoDoProblema 

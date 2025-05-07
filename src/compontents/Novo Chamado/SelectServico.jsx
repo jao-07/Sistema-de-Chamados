@@ -1,7 +1,7 @@
-import { useState, useEffect } from 'react'
 import styles from '../../styles/Novo Chamado/SelectServico.module.css'
 
 const SelectServico = ({vetorServicos, vetorCategorias, titulo, register, nome, error, placeholder, selectedValue}) => {
+
     return (
         <div>
             <label>{titulo}</label>
@@ -12,7 +12,7 @@ const SelectServico = ({vetorServicos, vetorCategorias, titulo, register, nome, 
                         <optgroup label={`${itemCategoria.categoria} - ${itemCategoria.descricao}`} key={itemCategoria.categoria}>
                             {
                                 vetorServicos.map((itemServico) => (
-                                    itemCategoria.id_categoria == itemServico.id_categoria  && 
+                                    itemCategoria.categoria == itemServico.categoria  && 
                                     <option key={itemServico.id} value={itemServico.nome}>{itemServico.nome}</option> 
                                 ))
                             }       
