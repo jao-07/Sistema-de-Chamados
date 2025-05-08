@@ -4,7 +4,7 @@ const SelectDefault = ({vetor, titulo, register, nome, error, placeholder, selec
   return (
     <div className={styles.container}>
         <label>{titulo}</label>
-        <select {...register(nome)}>
+        <select {...register(nome)} id={nome}>
             {!selectedValue && <option value="" hidden>{placeholder}</option>}
             {
                 vetor.map((item, index) => ( 

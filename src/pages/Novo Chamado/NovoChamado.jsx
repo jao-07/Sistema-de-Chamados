@@ -26,6 +26,8 @@ const NovoChamado = () => {
   const [setores, SetSetores] = useState([])
   const [categorias, SetCategorias] = useState([])
   const [servicos, SetServicos] = useState([])
+  const [departamentos, SetDepartamentos] = useState([])
+  const [blocosSalas, SetBlocosSalas] = useState([])
 
   //Usa o hook useForm para o controle e validação dos inputs do formulário
   const { register, handleSubmit, watch, setValue, clearErrors, reset, formState: { errors } } = useForm({
@@ -63,6 +65,10 @@ const NovoChamado = () => {
         SetCategorias(response.data)
         response = await axios.get('https://sistemas.icb.ufmg.br/wifi/api/servico/nomes')
         SetServicos(response.data)
+        response = await axios.get('https://sistemas.icb.ufmg.br/wifi/api/informacoes/departamentos')
+        SetDepartamentos(response.data.map(item => item.nome))
+        response = await axios.get('https://sistemas.icb.ufmg.br/wifi/api/informacoes/blocoSala')
+        SetBlocosSalas(response.data.map(item => item.local))
       }
       catch (erro){
         console.log("Erro! Não foi possível carregar os dados: " + erro.message)
@@ -72,9 +78,7 @@ const NovoChamado = () => {
       }
     }
     getDados()
-  },[])
-
- 
+  },[]) 
 
   return (
     <div className={styles.container}>
@@ -136,6 +140,8 @@ const NovoChamado = () => {
             register={register}
             setValue={setValue}
             clearErrors={clearErrors}
+            blocosSalas={blocosSalas}
+            departamentos={departamentos}
           />
 
           <InformacoesSobreEquipamento 

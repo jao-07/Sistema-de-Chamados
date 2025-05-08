@@ -61,26 +61,47 @@ const BuscarChamadoAnterior = ({SetLoading, reset, SetErroDados}) => {
     }
 
     const trataPatrimonio = (campos) => {
-        if(campos.patrimonio){
-            let patrimonio = campos.patrimonio.split(" ")
-            if(patrimonio[0] == 'Agência:'){
-                campos.agencia = patrimonio[1]
-                campos.projetoPesquisa = Object()
-                campos.projetoPesquisa.numeroProjeto = patrimonio[3] != "." ? patrimonio[3] : ""
-                campos.projetoPesquisa.numeroTermo = patrimonio[5] != "." ? patrimonio[5] : ""
-                campos.projetoPesquisa.numeroPatrimonioPP = patrimonio[7] != "." ? patrimonio[7] : ""
-            }
-            else if(patrimonio[0] == "Particular"){
-                patrimonio = campos.patrimonio.split(":")
-                campos.responsavelGuarda = patrimonio[1]
-            }
-            else{
-                campos.numeroPatrimonioEquipamentoPatrimoniado = patrimonio[1]
-            }
+        campos.seuComputador = "Não"
+        if(!campos.patrimonio){
+            campos.relacionadoEquipamento = "Não"
+            return
+        }
+        campos.relacionadoEquipamento = "Sim"
+        let patrimonio = campos.patrimonio.split(" ")
+        if(patrimonio[0] == 'Agência:'){
+            campos.origemEquipamento = "Projeto de pesquisa"
+            campos.agencia = patrimonio[1]
+            campos.projetoPesquisa = Object()
+            campos.projetoPesquisa.numeroProjeto = patrimonio[3] != "." ? patrimonio[3] : ""
+            campos.projetoPesquisa.numeroTermo = patrimonio[5] != "." ? patrimonio[5] : ""
+            campos.projetoPesquisa.numeroPatrimonioPP = patrimonio[7] != "." ? patrimonio[7] : ""
+        }
+        else if(patrimonio[0] == "Particular"){
+            campos.origemEquipamento = "Particular"
+            patrimonio = campos.patrimonio.split(":")
+            campos.responsavelGuarda = patrimonio[1]
+        }
+        else{
+            campos.origemEquipamento = "Patrimoniado"
+            campos.numeroPatrimonioEquipamentoPatrimoniado = patrimonio[1]
         }
     }
 
     const trataAreaServico = (campos) => {
+        const primeiroNomeDaArea = campos.areaServico.split("-")[0]
+        console.log(primeiroNomeDaArea)
+        if(primeiroNomeDaArea == "Informática")
+            campos.areaServico = "Informática"
+        else if(primeiroNomeDaArea == "Infraestrutura")
+            campos.areaServico = "Serviços de Infraestrutura"
+        else if(primeiroNomeDaArea == "ACBio")
+            campos.areaServico = "Assessoria de Comunicação"
+        else
+            campos.areaServico = "Manutenção Predial ou de Equipamentos"
+    }
+
+    const trataInformacoesContato = () => {
+        
 
     }
 
@@ -88,14 +109,16 @@ const BuscarChamadoAnterior = ({SetLoading, reset, SetErroDados}) => {
         if(campos.LargeDescricao)
             campos.descricao = campos.LargeDescricao
 
-        //campos.areaServico = campos.areaServico.split("-")[0]
-
         trataDisponibilidade(campos)
 
         trataPatrimonio(campos)
 
+        trataAreaServico(campos)
+
+        campos.infoContato = "Outras informações"
+
         reset(campos)
-        //Fazer o useEffect para obter os serviços
+        //TODO: Resolver areaServico
     }
 
     //Utiliza useEffect para buscar as informações do chamado de que se quer aproveitar
@@ -106,7 +129,7 @@ const BuscarChamadoAnterior = ({SetLoading, reset, SetErroDados}) => {
                 const response = await axios.get(`https://sistemas.icb.ufmg.br/wifi/api/chamadoAnterior/${idChamado}`)
                 let campos = response.data[0]
                 preencheCampos(campos)
-                console.log(response.data[0]);
+                console.log(campos);
                 SetErroDados(null)
             }
             catch (error) {

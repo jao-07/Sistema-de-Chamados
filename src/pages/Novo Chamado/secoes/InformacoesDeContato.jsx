@@ -6,7 +6,7 @@ import Horarios from '../../../compontents/Novo Chamado/Horarios'
 import * as options from '../../../utils/options'
 import { FaExclamationCircle } from "react-icons/fa"
 
-const InformacoesDeContato = ({watch, errors, register, setValue, clearErrors}) => {
+const InformacoesDeContato = ({watch, errors, register, setValue, clearErrors, blocosSalas, departamentos}) => {
   return (
     <div className={styles.secao}>
         <h2>Informações de Contato</h2>
@@ -36,7 +36,7 @@ const InformacoesDeContato = ({watch, errors, register, setValue, clearErrors}) 
             <div className={styles.inputsSecao}>
                 <div className={styles.coluna}>
                     <SelectDefault
-                        vetor={options.departamentos}
+                        vetor={departamentos}
                         titulo="Departamento"
                         nome="departamento"
                         placeholder="Escolha o departamento"
@@ -57,7 +57,7 @@ const InformacoesDeContato = ({watch, errors, register, setValue, clearErrors}) 
 
                 <div className={styles.coluna}>
                     <SelectDefault
-                        vetor={options.blocos_salas}
+                        vetor={blocosSalas}
                         titulo="Bloco/Sala"
                         nome="bloco_sala"
                         placeholder="Escolha o bloco/sala"

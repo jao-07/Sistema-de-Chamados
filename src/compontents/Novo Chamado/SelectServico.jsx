@@ -5,7 +5,7 @@ const SelectServico = ({vetorServicos, vetorCategorias, titulo, register, nome, 
     return (
         <div>
             <label>{titulo}</label>
-            <select {...register(nome)}>
+            <select key={selectedValue} {...register(nome)}>
             {!selectedValue && <option value="" hidden>{placeholder}</option>}
                 {
                     vetorCategorias.map((itemCategoria) => (
