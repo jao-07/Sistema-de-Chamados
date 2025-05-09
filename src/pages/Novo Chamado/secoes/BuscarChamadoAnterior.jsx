@@ -127,13 +127,15 @@ const BuscarChamadoAnterior = ({SetLoading, reset, SetErroDados}) => {
             try {
                 SetLoading(true)
                 const response = await axios.get(`https://sistemas.icb.ufmg.br/wifi/api/chamadoAnterior/${idChamado}`)
+
                 let campos = response.data[0]
                 preencheCampos(campos)
                 console.log(campos);
                 SetErroDados(null)
             }
             catch (error) {
-                SetErroDados("Erro! Não foi possível carregar os dados: " + error.message)
+                const mensagemApi = error.response?.data?.erro || error.message;
+                SetErroDados("Erro! " + mensagemApi);
             }
             finally{
                 SetLoading(false)

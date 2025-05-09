@@ -44,7 +44,7 @@ const Header = () => {
       />
 
       <Botao 
-        icone="FaArrowRotateLeft"
+        icone="FaArrowLeftLong"
         size="20"
         handle={handleClickReturn}
         posTop="100px"
