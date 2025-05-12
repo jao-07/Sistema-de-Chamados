@@ -48,6 +48,7 @@ const InformacoesDoServico = ({watch, errors, register, setValue, clearErrors, s
           register={register}
           error={errors.servico}
           selectedValue={watch().servico}
+          setValue={setValue}
         />
       }
     </div>

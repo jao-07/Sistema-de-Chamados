@@ -6,6 +6,9 @@ const FormChooses = ({vetor, size, nome, error, setValue, clearErrors, selectedV
     const handleClickFormChooses = (nome, value) => {
         setValue(nome, value)
         clearErrors(nome)
+        //caso seja a parte de selecionar a área de serviço, limpa o select e as observações de serviço
+        if(nome == "areaServico")
+            setValue("servico", "")
     }
 
     return (

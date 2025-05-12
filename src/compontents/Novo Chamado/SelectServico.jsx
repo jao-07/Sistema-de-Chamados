@@ -1,6 +1,6 @@
 import styles from '../../styles/Novo Chamado/SelectServico.module.css'
 
-const SelectServico = ({vetorServicos, vetorCategorias, titulo, register, nome, error, placeholder, selectedValue}) => {
+const SelectServico = ({vetorServicos, vetorCategorias, titulo, register, nome, error, placeholder, selectedValue, setValue}) => {
 
     return (
         <div>
@@ -23,8 +23,8 @@ const SelectServico = ({vetorServicos, vetorCategorias, titulo, register, nome, 
             {error && <p className={styles.erro}>{error.message}</p>}
             {selectedValue && 
                 <div className={styles.observacoes}>
-                    <label>Observações:</label>
-                    <p>{vetorServicos.find(item => item.nome == selectedValue)?.descricao}</p>
+                    <label><strong>Observações:</strong></label>
+                    <div dangerouslySetInnerHTML={{ __html: vetorServicos.find(item => item.nome == selectedValue)?.descricao}} />
 
                 </div>
             }
