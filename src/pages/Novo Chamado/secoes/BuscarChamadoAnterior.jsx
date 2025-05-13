@@ -11,7 +11,7 @@ const BuscarChamadoAnterior = ({SetLoading, reset, SetErroDados}) => {
     //const esperar = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 
     //Ex: Turno: 07:30-22:00
-    const trataHorarioCorrido = (string) => {
+    const trataHorarioContinuo = (string) => {
         const vetor = string.split(" ")
         const horario = vetor[1]
         return horario.split("-")
@@ -49,8 +49,8 @@ const BuscarChamadoAnterior = ({SetLoading, reset, SetErroDados}) => {
         } 
         else {
             if(campos.disponibilidade[0] == 'T'){
-                campos.tipoHorario = "Horário corrido"
-                campos.horarioCorrido = trataHorarioCorrido(campos.disponibilidade)
+                campos.tipoHorario = "Horário continuo"
+                campos.horarioContinuo = trataHorarioContinuo(campos.disponibilidade)
             }
             
             else{
@@ -100,11 +100,6 @@ const BuscarChamadoAnterior = ({SetLoading, reset, SetErroDados}) => {
             campos.areaServico = "Manutenção Predial ou de Equipamentos"
     }
 
-    const trataInformacoesContato = () => {
-        
-
-    }
-
     const preencheCampos = (campos) => {
         if(campos.LargeDescricao)
             campos.descricao = campos.LargeDescricao
@@ -126,7 +121,7 @@ const BuscarChamadoAnterior = ({SetLoading, reset, SetErroDados}) => {
         const getDados = async () => {
             try {
                 SetLoading(true)
-                const response = await axios.get(`https://sistemas.icb.ufmg.br/wifi/api/chamadoAnterior/${idChamado}`)
+                const response = await axios.get(`https://sistemas.icb.ufmg.br/wifi/api/chamado/chamadoAnterior/${idChamado}`)
 
                 let campos = response.data[0]
                 preencheCampos(campos)

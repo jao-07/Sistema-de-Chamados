@@ -93,7 +93,7 @@ const InformacoesDeContato = ({watch, errors, register, setValue, clearErrors, b
                 <Horarios
                     tipoHorario={watch().tipoHorario}
                     register={register}
-                    error={[errors.horarioCorrido, errors.horarioPartido, errors.horarioVariado]}
+                    error={[errors.horarioContinuo, errors.horarioPartido, errors.horarioVariado]}
                 />
             }
 

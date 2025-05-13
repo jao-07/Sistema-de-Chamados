@@ -132,6 +132,7 @@ const NovoChamado = () => {
           <DescricaoDoProblema 
             register={register}
             errors={errors}
+            watch={watch}
           />
 
           <InformacoesDeContato 

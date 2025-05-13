@@ -1,7 +1,7 @@
 import styles from '../NovoChamado.module.css'
 import FormInput from '../../../compontents/Novo Chamado/FormInput'
 
-const DescricaoDoProblema = ({register, errors}) => {
+const DescricaoDoProblema = ({register, errors, watch}) => {
   return (
     <div className={styles.secao}>
         <h2>Descrição do problema</h2>
@@ -28,6 +28,27 @@ const DescricaoDoProblema = ({register, errors}) => {
             <option value={2}>Urgente (Ônus reversível)</option>
             <option value={3}>Emergência (Ônus irreversível)</option>
         </select>
+
+        {watch().urgencia != 1 &&
+          <FormInput
+            label="Justifique o motivo da urgência/emergência"
+            nome="justificativa"
+            type='textarea'
+            placeholder="Digite a justificativa"
+            register={register}
+            error={errors.justificativa}
+          />
+        }
+
+        <FormInput
+          label="Anexo de arquivos, caso necessário"
+          nome="comprovanteEnvio"
+          register={register}
+          type="file"
+          accept=".pdf, .jpeg, .jpg, .gif, .png, .zip"
+          error={errors.comprovanteEnvio}
+      />
+        
     </div>
   )
 }

@@ -38,7 +38,7 @@ export const vetorInfos =
 
 export const vetorHorarios =
 [
-  {icone: "FaArrowRightLong", titulo: "Horário corrido" },
+  {icone: "FaArrowRightLong", titulo: "Horário continuo" },
   {icone: "FaPause", titulo: "Horário partido" },
   {icone: "FaAsterisk", titulo: "Horário variado" }
 ]

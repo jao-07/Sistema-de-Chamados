@@ -164,15 +164,6 @@ const InformacoesSobreEquipamento = ({watch, errors, register, setValue, clearEr
                                 register={register}
                                 error={errors.responsavelGuarda}
                             />
-                            
-                            <FormInput
-                                label="Foto/Comprovante de envio"
-                                nome="comprovanteEnvio"
-                                register={register}
-                                type="file"
-                                accept=".pdf, .jpeg, .jpg, .gif, .png, .zip"
-                                error={errors.comprovanteEnvio}
-                            />
                         </div>
 
                         <div className={styles.coluna}>

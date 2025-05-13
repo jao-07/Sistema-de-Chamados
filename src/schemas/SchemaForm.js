@@ -35,6 +35,14 @@ export const schema = yup.object({
       yup.string().
         required("Obrigatório escrever a descrição!")
         .min(20, "Descrição muito curta!"),
+
+    justificativa:
+      yup.mixed().when("urgencia", {
+        is: "1",
+        then: () => yup.string().notRequired(),
+        otherwise: () => yup.string().required("Obrigatório escrever a justificativa de urgência/emergência!")
+      }),
+
   
     //Opção escolhida para quais informações de contato utilizar, 1 para intranet, 2 para outras
     infoContato: 
@@ -60,19 +68,18 @@ export const schema = yup.object({
       .transform((value, originalValue) => originalValue === "" ? undefined : value),
     
     //Contatos adicionais digitados
-    contatosAdicionais: 
-      yup.string()
-      .required("Obrigatório informar contatos adicionais para o atendimento!"),
+    // contatosAdicionais: 
+    //   yup.string(),
     
-    //Opção escolhida para o tipo de horário, Horário corrido, Horário partido ou Horário variado
+    //Opção escolhida para o tipo de horário, Horário continuo, Horário partido ou Horário variado
     tipoHorario: 
       yup.string()
       .required("Origatório escolher o horário a ser contactado!"),
   
-    //Horários definidos nos campos de horário corrido
+    //Horários definidos nos campos de horário contínuo
     //É definido como um array de horarios (string)
-    horarioCorrido: yup.mixed().when("tipoHorario", {
-      is: "Horário corrido",
+    horarioContinuo: yup.mixed().when("tipoHorario", {
+      is: "Horário continuo",
       then: () =>
         yup
           .array()
@@ -83,7 +90,7 @@ export const schema = yup.object({
               .matches(/^([0-9]{2}):([0-9]{2})$/, "Formato inválido!")
           )
           .length(2, "Informe os dois horários")
-          .required("Informe o horário corrido")
+          .required("Informe o horário contínuo")
           .test("valid-range", "Horários passados inválidos!", timeValidation),
       otherwise: () => yup.mixed().notRequired()
     }),
@@ -151,8 +158,12 @@ export const schema = yup.object({
   
     //Origem do equipamento
     origemEquipamento:
-      yup.string()
-        .required("Obrigatório informar a origem do equipamento!"),
+      yup.mixed().when("seuComputador", {
+        is: "Sim",
+        then: () => yup.string().required("Obrigatório informar a origem do equipamento!"),
+        otherwise: () => yup.string().notRequired()
+      }),
+      
   
     //Número de patrimônio
     //Obrigatório caso a origem do equipamento seja Patrimoniado
