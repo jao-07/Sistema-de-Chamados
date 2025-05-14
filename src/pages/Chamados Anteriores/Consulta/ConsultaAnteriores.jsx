@@ -3,6 +3,8 @@ import { useEffect, useState } from 'react';
 import styles from "./ConsultaAnteriores.module.css"
 import axios from "axios"
 
+import Loading from '../../../compontents/Novo Chamado/Loading';
+
 function ConsultaAnteriores() {
 
     const { id } = useParams();
@@ -20,6 +22,7 @@ function ConsultaAnteriores() {
     useEffect(() => {
         const obtemMensagens = async () => {
             try{
+                setLoading(true);
                 //const resposta = await fetch(`/api/solicitacoes?usuario=${userId}`);
                 const resposta = [
                     {data: "07/05/2025", usuario: "solicitante", mensagem: "Mensagem aleatória"},
@@ -37,17 +40,20 @@ function ConsultaAnteriores() {
                 setLoading(false);
             }
         }
-        setLoading(true);
-        obtemMensagens
+        
+        obtemMensagens()
     }, [])
 
-    if (loading) return <p>Carregando...</p>;
     if (erro) return <p style={{ color: "red" }}>Erro: {erro}</p>;
     if (mensagens.length === 0) return <p>Não há nenhuma mensagem.</p>;
 
     return (
         <div className={styles.container}>
-           <div>Consulta do chamado {id}</div>
+
+            {loading && pagina == 1 &&(
+                <Loading />
+            )}
+
             <h3>Caso queira reabrir o chamado, digite abaixo os motivos da reabertura:</h3>
             <textarea 
                 type="text"

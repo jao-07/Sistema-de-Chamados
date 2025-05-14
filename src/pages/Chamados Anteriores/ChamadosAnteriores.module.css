@@ -12,12 +12,10 @@
 }
 
 .list{
-    display: flex;
-    flex-direction: column;
     list-style-type: none;
     padding: 0;
     align-items: center;
-    width: 100%;
+    width: 80%;
 }
 
 .data{
@@ -31,7 +29,7 @@
     padding: 0 10px;
     margin-bottom: 10px;
     box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-    width: 80%;
+    width: 100%;
 }
 
 .contents{

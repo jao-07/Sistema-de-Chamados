@@ -4,11 +4,14 @@ import { useNavigate } from "react-router";
 import axios from 'axios'
 import InfiniteScroll from "react-infinite-scroll-component";
 
+import Loading from "../../compontents/Novo Chamado/Loading";
+
 export default function ChamadosAnteriores() {
   const [solicitacoes, setSolicitacoes] = useState([])
   const [erro, setErro] = useState(null)
   const [pagina, SetPagina] = useState(1)
   const [temMais, SetTemMais] = useState(true)
+  const [loading, SetLoading] = useState(false)
   const limite = 10
 
   let navigate = useNavigate();
@@ -21,6 +24,7 @@ export default function ChamadosAnteriores() {
 
   const carregarSolicitacoes =  async () => {
     try {
+      SetLoading(true)
       const resposta = await axios.get(`https://sistemas.icb.ufmg.br/wifi/api/chamado/chamadosAnteriores`,{
         params:{
           usuario,
@@ -40,24 +44,28 @@ export default function ChamadosAnteriores() {
     } catch (e) {
       setErro(e.message);
     }
+    finally{
+      SetLoading(false)
+    }
   }
 
-  //if (loading) return <p>Carregando...</p>;
   if (erro) return <p style={{ color: "red" }}>Erro: {erro}</p>;
-  if (solicitacoes.length === 0) return <p>Você ainda não fez nenhuma solicitação.</p>;
 
-  return (
+  return (  
+
     <div className={styles.container}>
+
+      {loading && pagina == 1 &&(
+        <Loading />
+      )}
+
       <h2 className={styles.title}>Histórico de Solicitações</h2>
+      {solicitacoes.length == 0 && <h2>Você não possui nenhuma solicitação.</h2>}
       <ul className={styles.list}>
         <InfiniteScroll
           dataLength={solicitacoes.length}
           next={carregarSolicitacoes}
           hasMore={temMais}
-          loader={<svg className={styles.spinner} viewBox="0 0 50 50">
-                     <circle cx="25" cy="25" r="20" stroke="green" strokeWidth="5" fill="none" strokeDasharray="90 30" />
-                   </svg>}
-          endMessage={<p>Fim das solicitações</p>}
           >
           {solicitacoes.map((sol) => (
             <li key={sol.ticket} className={styles.solicitacao}>
@@ -71,7 +79,7 @@ export default function ChamadosAnteriores() {
                 {sol.dataEncerramento && <p><strong>Última modificação em:</strong> {new Date(sol.ultimaModificacao).toLocaleDateString()}</p>}
               </div>
               <div className={styles.botao}>
-                <button onClick={() => navigate(`/solicitacoesAnteriores/${sol.id}`)}>
+                <button onClick={() => navigate(`/solicitacoesAnteriores/${sol.ticket}`)}>
                   Consultar
                 </button>
               </div>
