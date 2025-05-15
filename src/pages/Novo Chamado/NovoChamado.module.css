@@ -45,6 +45,11 @@
     margin-bottom: 100px;
 }
 
+.comprovante{
+    width: 50%;
+    margin-bottom: 100px;
+}
+
 .secao{
     background-color: white;
     margin-bottom: 100px;
@@ -96,4 +101,18 @@
 .submitButton button:active{
     transform: scale(0.95);
     background-color: rgb(20, 50, 20);
+}
+
+.overlay{
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(255, 255, 255);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 10px;
+    z-index: 10;
 }

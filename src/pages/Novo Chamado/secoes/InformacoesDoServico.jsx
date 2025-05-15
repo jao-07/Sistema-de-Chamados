@@ -1,7 +1,6 @@
 import styles from '../NovoChamado.module.css'
 import FormChooses from '../../../compontents/Novo Chamado/FormChooses'
 import SelectServico from '../../../compontents/Novo Chamado/SelectServico'
-import * as options from '../../../utils/options'
 import { useEffect, useState } from 'react'
 
 const InformacoesDoServico = ({watch, errors, register, setValue, clearErrors, setores, categorias, servicos}) => {

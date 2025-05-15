@@ -16,7 +16,8 @@ import InformacoesDoServico from './secoes/InformacoesDoServico.jsx'
 import DescricaoDoProblema from './secoes/DescricaoDoProblema.jsx'
 import InformacoesDeContato from './secoes/InformacoesDeContato.jsx'
 import InformacoesSobreEquipamento from './secoes/InformacoesSobreEquipamento.jsx'
-import { array } from 'yup'
+import {trataHorarioIntranet} from '../../utils/helpers.js'
+import Comprovante from './comprovante/Comprovante.jsx'
 
 const NovoChamado = () => {
 
@@ -28,6 +29,7 @@ const NovoChamado = () => {
   const [servicos, SetServicos] = useState([])
   const [departamentos, SetDepartamentos] = useState([])
   const [blocosSalas, SetBlocosSalas] = useState([])
+  const [comprovante, setComprovante] = useState(null);
 
   //Usa o hook useForm para o controle e validação dos inputs do formulário
   const { register, handleSubmit, watch, setValue, clearErrors, reset, formState: { errors } } = useForm({
@@ -78,7 +80,33 @@ const NovoChamado = () => {
       }
     }
     getDados()
-  },[]) 
+  },[])
+
+  useEffect(() => {
+    const preencheInputsComDadosIntranet = async () => {
+      try{
+        const response = await axios.get('https://sistemas.icb.ufmg.br/wifi/api/intranet/joaovecruz')
+        const dados = response.data[0]
+        setValue("departamento", dados.departamento)
+        setValue("ramal", dados.ramal)
+        setValue("bloco_sala", dados.sala)
+        setValue("contatosAdicionais", `${dados.emailAdicional}  ${dados.celular}`)
+        trataHorarioIntranet(dados.horario, setValue)
+      }
+      catch(erro){
+        console.log("erro: ", erro.message)
+      }
+    }
+
+    if(watch().infoContato == "Informações cadastradas no Intranet")
+      preencheInputsComDadosIntranet()
+  }, [watch().infoContato, setValue])
+
+  const dadosComprovante = {nome: "João", email: "qlqr@fds.com", departamento: "Administração", local: "Sala N1-300", ramal: 2544, area: "Rede", servico: "Configurar roteador", assunto: "Configurar roteador para sala", descricao: "fjalfdklfajlkafkladfjadlkfjalfajdflkajfakldfjadlfjafladjfalsdj"}
+
+  if(!comprovante){
+    return <Comprovante dados={dadosComprovante}/>
+  }
 
   return (
     <div className={styles.container}>

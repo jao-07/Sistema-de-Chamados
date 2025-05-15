@@ -3,7 +3,7 @@ import FormChooses from '../../../compontents/Novo Chamado/FormChooses'
 import FormInput from '../../../compontents/Novo Chamado/FormInput'
 import SelectDefault from '../../../compontents/Novo Chamado/SelectDefault'
 import * as options from '../../../utils/options'
-import { handleChangePatrimonio } from '../../../utils/HandleFunctions'
+import { handleChangePatrimonio } from '../../../utils/helpers.js'
 
 import { FaExclamationCircle } from "react-icons/fa"
 

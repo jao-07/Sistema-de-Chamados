@@ -1,5 +1,5 @@
 import styles from '../NovoChamado.module.css'
-import {handleClickID} from '../../../utils/HandleFunctions'
+import {handleClickID} from '../../../utils/helpers.js'
 import { useEffect, useState } from 'react'
 import axios from 'axios'
 
@@ -30,7 +30,7 @@ const BuscarChamadoAnterior = ({SetLoading, reset, SetErroDados}) => {
     const trataHorarioVariado = (string) => {
         const vetor = string.split(" ")
         const indexes = [3,6,10,13,17,20,24,27,31,34]
-        const vetorHorarios = Array()
+        const vetorHorarios = []
         let index = 0
         for(let i=0; i<indexes.length; i++){
             index = indexes[i]
