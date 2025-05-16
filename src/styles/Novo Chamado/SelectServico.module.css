@@ -3,7 +3,8 @@
 }
 
 .observacoes div{
-    font-size: 20px;
+    /* font-size: 20px; */
+    font-size: clamp(1rem, 1vw, 4rem);
     padding-top: 30px;
 }
 

@@ -18,11 +18,13 @@
     box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
     text-align: center;
     color: red;
-    font-size: 30px;
+    /* font-size: 30px; */
+    font-size: clamp(1rem, 1.5vw, 4rem);
 }
 
 .popup button{
     background-color: gray;
     color: white;
-    font-size: 20px;
+    /* font-size: 20px; */
+    font-size: clamp(1rem, 1.3vw, 4rem);
 }

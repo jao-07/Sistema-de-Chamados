@@ -4,9 +4,11 @@
     width: 100%;
     background-color: green;
     color: white;
-    min-width: 500px;
-    font-size: 50px;
+    /* min-width: 500px; */
+    /* font-size: 50px; */
+    font-size: clamp(1rem, 2.5vw, 4rem);
     align-items: center;
     justify-content: center;
-    font-family: 'Poppins, sans-serif';
+    text-align: center;
+    font-family: 'Poppins', sans-serif;
 }

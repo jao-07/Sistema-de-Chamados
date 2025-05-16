@@ -37,7 +37,8 @@
     justify-content: center;
     position: relative;
     right: 50px;
-    font-size: 100px;
+    /* font-size: 100px; */
+    font-size: clamp(1rem, 7vw, 8rem);
 }
 
 .form{
@@ -46,8 +47,25 @@
 }
 
 .comprovante{
-    width: 50%;
-    margin-bottom: 100px;
+    width: 80%;
+    margin-top: 100px;
+}
+
+.comprovante h1{
+    color: green;
+    font-family: 'Poppins', sans-serif;
+}
+
+.dadosComprovante h2{
+    color: green;
+}
+
+
+.dadosComprovante{
+    background-color: rgb(128, 128, 128, 0.2);
+    border-radius: 10px;
+    padding: 10px 30px;
+    margin: 20px;
 }
 
 .secao{
@@ -55,7 +73,8 @@
     margin-bottom: 100px;
     box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
     border-radius: 10px;
-    padding: 30px 100px;
+    /* padding: 30px 100px; */
+    padding: clamp(1rem, 1.5vw, 8rem) clamp(1rem, 5vw, 8rem);
     width: 100%;
 }
 
@@ -65,12 +84,20 @@
 }
 
 .secao p{
-    font-size: 20px;
+    /* font-size: 20px; */
+    font-size: clamp(1rem, 1vw, 8rem);
 }
 
 .inputsSecao{
     display: flex;
     justify-content: space-between;
+    flex-wrap: wrap;
+}
+
+@media (max-width: 1024px) {
+    .inputsSecao{
+        display: block;
+    }
 }
 
 .coluna{

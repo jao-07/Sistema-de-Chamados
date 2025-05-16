@@ -1,7 +1,6 @@
-import React from 'react';
 import styles from "./Header.module.css"
-import Botao from './Botao';
-import { useNavigate, useLocation } from "react-router";
+import Botao from './Botao'
+import { useNavigate, useLocation } from "react-router"
 
 const Header = () => {
 
