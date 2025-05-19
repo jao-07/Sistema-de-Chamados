@@ -20,6 +20,13 @@
     margin-right: 20px;
 }
 
+@media (max-width: 930px) {
+    .linha{
+        display: flex;
+        flex-direction: column;
+    }
+}
+
 .erro{
     color: red;
 }

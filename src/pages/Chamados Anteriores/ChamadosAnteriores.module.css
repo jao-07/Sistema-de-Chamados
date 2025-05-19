@@ -16,7 +16,7 @@
     list-style-type: none;
     padding: 0;
     align-items: center;
-    width: 80%;
+    width: 90%;
 }
 
 .data{
@@ -59,4 +59,24 @@
 
 .botao button:active{
     transform: scale(0.95);
+}
+
+@media (max-width: 750px) {
+    .solicitacao{
+        display: block;
+    }
+
+    .contents{
+        display: block;
+        width: 100%;
+    }
+
+    .botao{
+        margin-bottom: 10px;
+        width: 100%;
+    }
+
+    .botao button{
+        width: 100%;
+    }
 }

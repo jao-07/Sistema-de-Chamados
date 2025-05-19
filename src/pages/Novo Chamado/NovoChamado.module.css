@@ -7,9 +7,15 @@
 }
 
 .aproveitamento{
-    width: 60%;
     display: flex;
     justify-content: space-between;
+    align-items: center;
+}
+
+@media (max-width: 700px) {
+    .aproveitamento{
+        display: block;
+    }
 }
 
 .aproveitamento button{
@@ -36,9 +42,8 @@
     align-items: center;
     justify-content: center;
     position: relative;
-    right: 50px;
-    /* font-size: 100px; */
-    font-size: clamp(1rem, 7vw, 8rem);
+    right: clamp(1rem, 3vw, 10rem); 
+    font-size: clamp(3rem, 5vw, 8rem);
 }
 
 .form{

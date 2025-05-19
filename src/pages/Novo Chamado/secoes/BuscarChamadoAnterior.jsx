@@ -148,8 +148,8 @@ const BuscarChamadoAnterior = ({SetLoading, reset, SetErroDados}) => {
                 <input
                     type="number"
                     placeholder="Digite o número do chamado"
-                    style={{ width: "70%" }}
                     onChange={(event) => SetInputValue(event.target.value)}
+                    style={{width: "90%"}}
                 />
                 <button onClick={() => handleClickID(inputValue, SetIdChamado, SetErroDados)}>
                     Buscar
