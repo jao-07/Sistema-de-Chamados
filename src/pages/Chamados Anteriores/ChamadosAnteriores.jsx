@@ -79,7 +79,7 @@ export default function ChamadosAnteriores() {
                 {sol.dataEncerramento && <p><strong>Última modificação em:</strong> {new Date(sol.ultimaModificacao).toLocaleDateString()}</p>}
               </div>
               <div className={styles.botao}>
-                <button onClick={() => navigate(`/solicitacoesAnteriores/${sol.ticket}`)}>
+                <button onClick={() => navigate(`/solicitacoesAnteriores/${sol.ticket}`, { state: { autorizado: true } })}>
                   Consultar
                 </button>
               </div>
