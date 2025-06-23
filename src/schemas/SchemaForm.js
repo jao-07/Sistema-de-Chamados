@@ -1,5 +1,5 @@
 import * as yup from "yup";
-import { timeValidation,  ValidationInputsPP} from "../utils/validações";
+import { singleShiftValidation, atLeastOneValidation,  ValidationInputsPP, shiftValidation} from "../utils/validações";
 
 //Define as regras de cada input utilizando a biblioteca yup
 export const schema = yup.object({
@@ -67,10 +67,6 @@ export const schema = yup.object({
       .positive("Ramal inválido!")
       .transform((value, originalValue) => originalValue === "" ? undefined : value),
     
-    //Contatos adicionais digitados
-    // contatosAdicionais: 
-    //   yup.string(),
-    
     //Opção escolhida para o tipo de horário, Horário continuo, Horário partido ou Horário variado
     tipoHorario: 
       yup.string()
@@ -91,7 +87,7 @@ export const schema = yup.object({
           )
           .length(2, "Informe os dois horários")
           .required("Informe o horário contínuo")
-          .test("valid-range", "Horários passados inválidos!", timeValidation),
+          .test("valid-range", "Horários passados inválidos!", singleShiftValidation),
       otherwise: () => yup.mixed().notRequired()
     }),
   
@@ -112,9 +108,10 @@ export const schema = yup.object({
                   .matches(/^([0-9]{2}):([0-9]{2})$/, "Formato inválido")
               )
               .length(2)
-              .test("valid-range", "Horários passados inválidos!", timeValidation)
+              .test("valid-range", "Horários passados inválidos!", shiftValidation)
           )
           .length(2)
+          .test("pelo menos um turno preenchido", "Preencha pelo menos um turno!", atLeastOneValidation)
           .required("Informe os horários do turno partido"),
       otherwise: () => yup.mixed().notRequired()
     }),
@@ -136,10 +133,11 @@ export const schema = yup.object({
                   .matches(/^([0-9]{2}):([0-9]{2})$/, "Formato inválido")
               )
               .length(2)
-              .test("valid-range", "Horários passados inválidos!", timeValidation)
+              .test("turno preenchido corretamente", "Horários passados inválidos!", shiftValidation)
               .required("Informe os horários do turno variado")
           )
           .length(10)
+          .test("pelo menos um turno preenchido", "Preencha pelo menos um turno!", atLeastOneValidation)
           .required("Informe os horários do turno variado"),
       otherwise: () => yup.mixed().notRequired()
     }),

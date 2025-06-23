@@ -3,9 +3,12 @@ import styles from '../../styles/Novo Chamado/Horarios.module.css'
 const Horarios = ({tipoHorario, register, error}) => {
 
     //Verifica se há algum erro em algum input de cada tipo de horário e coloca a mensagem de erro nas variáveis abaixo
-    const erroHorarioContinuo = error[0]?.root?.message; 
-    const erroHorarioPartido = error[1]?.find(e => e?.message)?.message;
-    const erroHorarioVariado = error[2]?.find(e => e?.message)?.message;
+    const erroHorarioContinuo = error[0]?.root?.message;
+    const erroHorarioPartido = error[1]?.root?.message;
+    const erroHorarioVariado = error[2]?.root?.message;
+    // const erroHorarioPartido = error[1]?.find(e => e?.message)?.message;
+    // const erroHorarioVariado = error[2]?.find(e => e?.message)?.message;
+    console.log(error[1])
   
     return (
         <div className={styles.container} name={tipoHorario == "Horário continuo" ? "horarioContinuo" : tipoHorario == "Horário partido" ? "horarioPartido" : "horarioVariado"}>
@@ -15,8 +18,8 @@ const Horarios = ({tipoHorario, register, error}) => {
                     <p>*Obs: Quando há um único turno de trabalho contínuo, sem pausas, todos os dias</p>
                     <div className={styles.linha}>
                         <p>Turno:</p>
-                        <input type="time" {...register("horarioContinuo.0")} className={error[0]?.[0] ? styles.erroInput : ""}/>
-                        <input type="time" {...register("horarioContinuo.1")} className={error[0]?.[1] ? styles.erroInput : ""}/>                 
+                        <input type="time" {...register("horarioContinuo.0")} className={error[0] ? styles.erroInput : ""}/>
+                        <input type="time" {...register("horarioContinuo.1")} className={error[0] ? styles.erroInput : ""}/>                 
                     </div>
                 </div>
             }

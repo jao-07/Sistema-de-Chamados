@@ -31,7 +31,7 @@ const NovoChamado = () => {
   const [blocosSalas, SetBlocosSalas] = useState([])
   const [comprovante, setComprovante] = useState(null);
 
-  //Usa o hook useForm para o controle e validação dos inputs do formulário
+  //Inicializa o hook useForm para o controle e validação dos inputs do formulário
   const { register, handleSubmit, watch, setValue, clearErrors, reset, formState: { errors } } = useForm({
     resolver: yupResolver(schema), shouldFocusError: false,
     defaultValues: {
@@ -191,7 +191,7 @@ const NovoChamado = () => {
           </div>
 
         </form>
-        {/* <pre>{JSON.stringify(watch(), null, 2)}</pre> */}
+        <pre>{JSON.stringify(watch(), null, 2)}</pre>
       </div>
     </div>
   )
